@@ -4,6 +4,125 @@
              xmlns:local="clr-namespace:BlockPlanner"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
-         
+
+        <Style x:Key="TableCell" TargetType="TextBlock" >
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="HorizontalAlignment" Value="Stretch"/>
+            <Setter Property="TextAlignment" Value="Center"/>
+        </Style>
+
+        <Style x:Key="DetailsButtonCell" TargetType="Button" >
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="HorizontalAlignment" Value="Stretch"/>
+            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+            <Setter Property="Width" Value="80"/>
+        </Style>
+
+        <Style x:Key="DeleteButtonCell" TargetType="Button" >
+            <Setter Property="HorizontalContentAlignment" Value="Center"></Setter>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="HorizontalAlignment" Value="Stretch"/>
+            <Setter Property="Width" Value="30"/>
+            <Setter Property="Content" Value="X"/>
+            <Setter Property="FontStretch" Value="Expanded"/>
+            <Setter Property="Background" Value="OrangeRed"/>
+        </Style>
+
+        <Style x:Key="PlanLabelCell" TargetType="TextBlock" >
+            <Setter Property="FontSize" Value="20"/>
+            <Setter Property="HorizontalAlignment" Value="Stretch"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="TextAlignment" Value="Center"/>
+            <Setter Property="Margin" Value="0 0 0 0"/>
+        </Style>
+
+        <Style x:Key="PlanTimeLabelCell" TargetType="TextBlock" >
+            <Setter Property="FontSize" Value="20"/>
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="TextAlignment" Value="Center"/>
+            <Setter Property="Margin" Value="0 0 0 0"/>
+        </Style>
+        
+        <Style x:Key="PlanDetailsActionButtons" TargetType="Button">
+            <Setter Property="FontSize" Value="20"/>
+            <Setter Property="HorizontalAlignment" Value="Left"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="Width" Value="300"/>
+            <Setter Property="Height" Value="60"/>
+        </Style>
+
+        <Style x:Key="PlanSettingsActionButtons" TargetType="Button">
+            <Setter Property="FontSize" Value="34"/>
+            <Setter Property="HorizontalAlignment" Value="Right"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="Width" Value="400"/>
+            <Setter Property="Height" Value="80"/>
+        </Style>
+
+        <Style x:Key="PlanSettingsFieldLabels" TargetType="TextBlock" >
+            <Setter Property="TextAlignment" Value="Center"/>
+            <Setter Property="FontSize" Value="30"/>
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+        </Style>
+
+        <Style x:Key="PlanSettingsInputField" TargetType="TextBox">
+            <Setter Property="TextAlignment" Value="Left"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="HorizontalContentAlignment" Value="Left"/>
+            <Setter Property="VerticalAlignment" Value="Stretch"/>
+            <Setter Property="HorizontalAlignment" Value="Stretch"/>
+            <Setter Property="FontSize" Value="30"/>
+            <Setter Property="TextWrapping" Value="Wrap"/>
+        </Style>
+
+        <Style x:Key="PlanSettingsWeekDayButtons" TargetType="Button">
+            <Setter Property="HorizontalAlignment" Value="Stretch" />
+            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+            <Setter Property="VerticalAlignment" Value="Stretch"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="FontSize" Value="30"/>
+        </Style>
+
+        <Style x:Key="PlanSettingsFieldLabelsBorder" TargetType="Border">
+            <Setter Property="VerticalAlignment" Value="Stretch"/>
+            <Setter Property="HorizontalAlignment" Value="Stretch"/>
+            <Setter Property="Margin" Value="10 10 10 10"/>
+            <Setter Property="Background" Value="LightGray"/>
+        </Style>
+
+        <Style x:Key="PlanSettingsWeekDayLabelsBorder" TargetType="Border">
+            <Setter Property="VerticalAlignment" Value="Stretch"/>
+            <Setter Property="HorizontalAlignment" Value="Stretch"/>
+            <Setter Property="Width" Value="100"/>
+            <Setter Property="Margin" Value="10 10 10 10"/>
+            <Setter Property="Background" Value="LightGray"/>
+        </Style>
+
+        <Style x:Key="PlanSettingsTaskListBorder" TargetType="Border">
+            <Setter Property="VerticalAlignment" Value="Stretch"/>
+            <Setter Property="HorizontalAlignment" Value="Stretch"/>
+            <Setter Property="Margin" Value="10 10 10 10"/>
+            <Setter Property="Background" Value="AliceBlue"/>
+        </Style>
+
+        <DataTemplate x:Key="PlanSettingsColorGridTemplate">
+            <TextBlock Background="DarkRed" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"/>
+        </DataTemplate>
+
+        <Style x:Key="PlanSettingsSetColorButton" TargetType="Button">
+            <Setter Property="HorizontalAlignment" Value="Stretch" />
+            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+            <Setter Property="VerticalAlignment" Value="Stretch"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="FontSize" Value="30"/>
+            <Setter Property="Background" Value="Snow"/>
+        </Style>
+
     </Application.Resources>
 </Application>
