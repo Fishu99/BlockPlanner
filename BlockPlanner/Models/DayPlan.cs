@@ -14,6 +14,7 @@ namespace BlockPlanner.Models
         public DayPlan(WeekDay planDay)
         {
             Day = planDay;
+            DayTasks = new List<Task>();
         }
 
     }

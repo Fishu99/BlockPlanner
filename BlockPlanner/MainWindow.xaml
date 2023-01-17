@@ -9,8 +9,6 @@
         Title="BlockPlanner" Width="1920" Height="1080">
         <!-- Title="BlockPlanner" Width="1100" Height="600"> -->
     <Grid>
-        <views:PlanSettingsView/>
-        <!-- <views:PlanDetailsView/> -->
-        <!-- <views:MainMenuView/> -->
+        <views:PlanSettingsView DataContext="{Binding CurrentViewModel}"/>
     </Grid>
 </Window>

@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:BlockPlanner.Views"
              mc:Ignorable="d" 
-             d:DesignHeight="768" d:DesignWidth="1366">
+             d:DesignHeight="1080" d:DesignWidth="1920">
              <!-- d:DesignHeight="600" d:DesignWidth="1100"> -->
     <Grid>
         <Grid.RowDefinitions>
@@ -18,28 +18,11 @@
             <ColumnDefinition Width="2*"/>
         </Grid.ColumnDefinitions>
 
-        <!-- <Grid.ColumnDefinitions> -->
-        <!--     <ColumnDefinition Width="*"/> -->
-        <!--     <ColumnDefinition Width="2*"/> -->
-        <!-- </Grid.ColumnDefinitions> -->
-        <!-- <Grid Grid.Column="0"> -->
-        <!--     <Grid.RowDefinitions> -->
-        <!--         <RowDefinition Height="*"/> -->
-        <!--         <RowDefinition Height="*"/> -->
-        <!--         <RowDefinition Height="3*"/> -->
-        <!--     </Grid.RowDefinitions> -->
-        <!-- </Grid> -->
-        <!-- <Grid Grid.Column="1"> -->
-        <!--     <Grid.RowDefinitions> -->
-        <!--         <RowDefinition Height="*"/> -->
-        <!--         <RowDefinition Height="4*"/> -->
-        <!--     </Grid.RowDefinitions> -->
-        <!-- </Grid> -->
-
 <TextBlock
             Grid.Row="0"
             Grid.Column="0"
-            FontSize="32" 
+            FontSize="74" 
+            FontWeight="Medium"
             HorizontalAlignment="Center" 
             VerticalAlignment="Center"
             Text="BlockPlanner">
@@ -48,7 +31,7 @@
         <TextBlock
             Grid.Row="0"
             Grid.Column="1"
-            FontSize="24" 
+            FontSize="44" 
             HorizontalAlignment="Center" 
             VerticalAlignment="Bottom"
             Text="Available Plans"
@@ -58,11 +41,11 @@
         <Button
             Grid.Row="1"
             Grid.Column="0"
-            FontSize="24"
+            FontSize="44"
             HorizontalAlignment="Center"
             VerticalAlignment="Center"
-            Height="50"
-            Width="200"
+            Height="100"
+            Width="400"
             Content="Add new plan"
             Background="YellowGreen">
         </Button>
@@ -70,7 +53,7 @@
         <Viewbox
             Grid.Row="2"
             Grid.Column="0"
-            Margin="10 0 10 0">
+            Margin="70 0 70 0">
             <Calendar 
                 Language="en-US"
                 FirstDayOfWeek="Monday"/>
@@ -82,71 +65,54 @@
             Grid.Row="1"
             Grid.Column="1"
             Grid.RowSpan="2"
-            Margin="10 25 10 20"
-            FontSize="15"
-            FontWeight="Bold"
+            Margin="10 20 10 20"
+            FontSize="25"
+            FontWeight="Medium"
             HorizontalAlignment="Stretch"
             SelectionMode="Single"
-            
-            >
-
-            <ListViewItem></ListViewItem>
-            <ListViewItem></ListViewItem>
-            <ListViewItem></ListViewItem>
-            <!-- <ListViewItem></ListViewItem> -->
-            <!-- <ListViewItem></ListViewItem> -->
-            <!-- <ListViewItem></ListViewItem> -->
-            <!-- <ListViewItem></ListViewItem> -->
-            <!-- <ListViewItem></ListViewItem> -->
-            <!-- <ListViewItem></ListViewItem> -->
-            <!-- <ListViewItem></ListViewItem> -->
-            <!-- <ListViewItem></ListViewItem> -->
-            <!-- <ListViewItem></ListViewItem> -->
-            <!-- <ListViewItem></ListViewItem> -->
-            <!-- <ListViewItem></ListViewItem> -->
-            <!-- <ListViewItem></ListViewItem> -->
-            <!-- <ListViewItem></ListViewItem> -->
-            <!-- <ListViewItem></ListViewItem> -->
-            <!-- <ListViewItem></ListViewItem> -->
-            <!-- <ListViewItem></ListViewItem> -->
+            ItemsSource="{Binding Plans}">
 
             <ListView.ItemContainerStyle>
                 <Style TargetType="ListViewItem">
                     <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
                     <Setter Property="FontWeight" Value="Normal"/>
+                    <Setter Property="VerticalAlignment" Value="Center"/>
                 </Style>
             </ListView.ItemContainerStyle>
 
             <ListView.View>
                 <GridView AllowsColumnReorder="False">
-                    <GridViewColumn Header="Plan ID" Width="80">
+                    <GridViewColumn Header="Plan ID" Width="100">
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
-                                <TextBlock Style="{StaticResource TableCell}" Text="10"></TextBlock>
+                                <Border
+                                    Style="{StaticResource MainMenuTableCellBorder}">
+                                    <TextBlock Style="{StaticResource TableCell}" Text="{Binding PlanId}"/>
+                                </Border>
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>
 
-                    <GridViewColumn Header="Plan Name" Width="250">
+                    <GridViewColumn Header="Plan Name" Width="600">
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
-                                <TextBlock Style="{StaticResource TableCell}" Text="WeekPlan"></TextBlock>
+                                <TextBlock Style="{StaticResource TableCell}" Text="{Binding PlanName}"></TextBlock>
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>
 
-                    <GridViewColumn Header="Start Time" Width="100">
+                    <GridViewColumn Header="Start Time" Width="200">
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
-                                <TextBlock Style="{StaticResource TableCell}" Text="16/01/23"></TextBlock>
+                                <TextBlock Style="{StaticResource TableCell}" Text="{Binding WeekStartTime}"></TextBlock>
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>
 
-                    <GridViewColumn Header="End Time" Width="100">
+                    <GridViewColumn Header="End Time" Width="200">
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
-                                <TextBlock Style="{StaticResource TableCell}" Text="21/01/23"></TextBlock>
+                                <TextBlock Style="{StaticResource TableCell}" Text="{Binding WeekEndTime}"></TextBlock>
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>

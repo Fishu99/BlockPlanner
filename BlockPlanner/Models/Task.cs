@@ -21,7 +21,6 @@ namespace BlockPlanner.Models
 
         public Task()
         {
-            
         }
 
         public Task(string taskName, DateTime startTime, DateTime endTime, Color blockColor, string additionalInfo)

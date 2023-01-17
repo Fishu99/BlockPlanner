@@ -9,7 +9,8 @@ namespace BlockPlanner.Models
     public class Plan
     {
         public string Name { get; set; }
-        public DateTime SelectedWeek { get; set; }
+        public DateTime WeekStartTime { get; set; }
+        public DateTime WeekEndTime { get; set; }
         public List<DayPlan> ScheduledDays { get; set; }
 
         public Plan()
@@ -17,17 +18,18 @@ namespace BlockPlanner.Models
             
         }
 
-        public Plan(string name, DateTime selectedWeek, List<DayPlan> scheduledDays)
+        public Plan(string name, DateTime weekStartTime, DateTime weekEndTime, List<DayPlan> scheduledDays)
         {
             Name = name;
-            SelectedWeek = selectedWeek;
+            WeekStartTime = weekStartTime;
+            WeekEndTime = weekEndTime;
             ScheduledDays = scheduledDays;
         }
 
         public bool Conflicts(Plan newPlan)
         {
-            var newPlanWeekDay = newPlan.SelectedWeek.DayOfWeek;
-            if (SelectedWeek.DayOfWeek != newPlanWeekDay) return false;
+            var newPlanWeekDay = newPlan.WeekStartTime.DayOfWeek;
+            if (WeekStartTime.DayOfWeek != newPlanWeekDay) return false;
             return Name == newPlan.Name;
         }
     }

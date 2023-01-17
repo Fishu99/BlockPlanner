@@ -62,17 +62,27 @@
                 Grid.Row="0"
                 Grid.Column="1"
                 Style="{StaticResource PlanSettingsFieldLabelsBorder}">
-                <TextBox Style="{StaticResource PlanSettingsInputField}" MaxLength="35"/>
+                <TextBox Style="{StaticResource PlanSettingsInputField}" MaxLength="35" Text ="{Binding PlanName, UpdateSourceTrigger=PropertyChanged}"/>
             </Border>
 
-            <Border 
+            <Border
                 Grid.Row="1"
                 Grid.Column="1"
-                Style="{StaticResource PlanSettingsFieldLabelsBorder}">
-                <TextBox Style="{StaticResource PlanSettingsInputField}" MaxLength="35"/>
+                Margin="10"
+                VerticalAlignment="Stretch"
+                HorizontalAlignment="Stretch">
+            
+                <DatePicker
+                    Background="White"
+                    FontSize="30"
+                    Language="en-US"
+                    FirstDayOfWeek="Monday"
+                    VerticalContentAlignment="Center"
+                    CalendarStyle="{StaticResource StyleCalendar}">
+                </DatePicker>
             </Border>
 
-            <Border 
+            <Border
                 Grid.Row="1"
                 Grid.Column="0"
                 Style="{StaticResource PlanSettingsFieldLabelsBorder}">
@@ -149,8 +159,9 @@
 
 
 
-                <ListView FontSize="30" >
-                    <ListViewItem></ListViewItem>
+                <ListView 
+                    FontSize="30"
+                    ItemsSource="{Binding CurrentTasks}">
 
                     <ListView.ItemContainerStyle>
                         <Style TargetType="ListViewItem">
@@ -163,10 +174,45 @@
 
                     <ListView.View>
                         <GridView AllowsColumnReorder="False">
-                            <GridViewColumn Header="Order" Width="100"/>
-                            <GridViewColumn Header="Time" Width="300"/>
-                            <GridViewColumn Header="Task" Width="400"/>
-                            <GridViewColumn Header="Color" Width="100" CellTemplate="{StaticResource PlanSettingsColorGridTemplate}"/>
+                            <GridViewColumn Header="Order" Width="100">
+                                <GridViewColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <Border
+                                            Style="{StaticResource MainMenuTableCellBorder}">
+                                            <TextBlock Style="{StaticResource TableCell}" Text="{Binding Order}"/>
+                                        </Border>
+                                    </DataTemplate>
+                                </GridViewColumn.CellTemplate>
+                            </GridViewColumn>
+                            <GridViewColumn Header="Time" Width="300">
+                                <GridViewColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <Border
+                                            Style="{StaticResource MainMenuTableCellBorder}">
+                                            <TextBlock Style="{StaticResource TableCell}" Text="{Binding WeekTime}"/>
+                                        </Border>
+                                    </DataTemplate>
+                                </GridViewColumn.CellTemplate>
+                            </GridViewColumn>
+                            <GridViewColumn Header="Task" Width="400">
+                                <GridViewColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <Border
+                                            Style="{StaticResource MainMenuTableCellBorder}">
+                                            <TextBlock Style="{StaticResource TableCell}" Text="{Binding TaskName}"/>
+                                        </Border>
+                                    </DataTemplate>
+                                </GridViewColumn.CellTemplate>
+                            </GridViewColumn>
+                            <GridViewColumn Header="Color" Width="100">
+                                <GridViewColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <Border>
+                                            <TextBlock Background="{Binding Color}" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"/>
+                                        </Border>
+                                    </DataTemplate>
+                                </GridViewColumn.CellTemplate>
+                            </GridViewColumn>
                         </GridView>
                     </ListView.View>
                 </ListView>
@@ -214,7 +260,8 @@
                 Grid.Row="1"
                 Grid.Column="1"
                 Style="{StaticResource PlanSettingsFieldLabelsBorder}">
-                <TextBox Style="{StaticResource PlanSettingsInputField}"/>
+                <TextBox Style="{StaticResource PlanSettingsInputField}"
+                         Text="{Binding TaskName, UpdateSourceTrigger=PropertyChanged, TargetNullValue=''}"/>
             </Border>
 
             <!-- Start time -->
@@ -229,7 +276,8 @@
                 Grid.Row="2"
                 Grid.Column="1"
                 Style="{StaticResource PlanSettingsFieldLabelsBorder}">
-                <TextBox Style="{StaticResource PlanSettingsInputField}"/>
+                <TextBox Style="{StaticResource PlanSettingsInputField}"
+                         Text="{Binding StartTime, UpdateSourceTrigger=PropertyChanged}"/>
             </Border>
 
             <!-- End time -->
@@ -237,14 +285,15 @@
                 Grid.Row="3"
                 Grid.Column="0"
                 Style="{StaticResource PlanSettingsFieldLabelsBorder}">
-                <TextBlock Text="End time" Style="{StaticResource PlanSettingsFieldLabels}" />
+                <TextBlock Text="End time" Style="{StaticResource PlanSettingsFieldLabels}"/>
             </Border>
 
             <Border 
                 Grid.Row="3"
                 Grid.Column="1"
                 Style="{StaticResource PlanSettingsFieldLabelsBorder}">
-                <TextBox Style="{StaticResource PlanSettingsInputField}"/>
+                <TextBox Style="{StaticResource PlanSettingsInputField}"
+                         Text="{Binding EndTime, UpdateSourceTrigger=PropertyChanged}"/>
             </Border>
 
             <!-- Color -->
@@ -268,12 +317,11 @@
                     Grid.Column="0"
                     VerticalAlignment="Stretch"
                     HorizontalAlignment="Stretch"
-                    Background="DarkRed"
+                    Background="{Binding Color}"
                     Margin="10" />
 
                 <Border Grid.Row="0" Grid.Column="1" Margin="10">
                     <Button Content="Select color" Style="{StaticResource PlanSettingsSetColorButton}"/>
-                    <!-- <TextBlock Text="Wed" Style="{StaticResource PlanSettingsFieldLabels}"/> -->
                 </Border>
 
             </Grid>
@@ -291,7 +339,8 @@
                 Grid.Row="5"
                 Grid.Column="1"
                 Style="{StaticResource PlanSettingsFieldLabelsBorder}">
-                <TextBox Style="{StaticResource PlanSettingsInputField}" VerticalContentAlignment="Top"/>
+                <TextBox Style="{StaticResource PlanSettingsInputField}" VerticalContentAlignment="Top"
+                         Text="{Binding AdditionalInfo, UpdateSourceTrigger=PropertyChanged}"/>
             </Border>
 
             <Button 

@@ -286,6 +286,27 @@
             <TextBlock Grid.Row="53" Grid.Column="0" Grid.RowSpan="4" Text="19:00 - 20:00" Style="{StaticResource PlanTimeLabelCell}"></TextBlock>
             <TextBlock Grid.Row="57" Grid.Column="0" Grid.RowSpan="4" Text="20:00 - 21:00" Style="{StaticResource PlanTimeLabelCell}"></TextBlock>
 
+
+            <!-- Data -->
+            <Border
+                Grid.Row="3"
+                Grid.Column="1"
+                Grid.RowSpan="5"
+                Margin="10 0 10 0"
+                Background="Black"
+                CornerRadius="10">
+                <TextBlock Text="OR" FontSize="40" TextAlignment="Center" VerticalAlignment="Center"/>
+            </Border>
+            <Border
+                Grid.Row="3"
+                Grid.Column="1"
+                Grid.RowSpan="5"
+                Margin="15 2 15 2"
+                Background="DarkSeaGreen"
+                CornerRadius="10">
+                <TextBlock Text="OR" FontSize="40" TextAlignment="Center" VerticalAlignment="Center"/>
+            </Border>
+
         </Grid>
 
         <Grid Grid.Row="0" Grid.Column="1">

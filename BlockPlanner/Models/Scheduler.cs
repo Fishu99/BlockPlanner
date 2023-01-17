@@ -11,6 +11,8 @@ namespace BlockPlanner.Models
     {
         private readonly List<Plan> _plans;
 
+        public List<Plan> Plans => _plans;
+
         public Scheduler()
         {
             _plans = new List<Plan>();

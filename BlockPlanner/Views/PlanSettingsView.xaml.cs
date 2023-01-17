@@ -24,5 +24,6 @@ namespace BlockPlanner.Views
         {
             InitializeComponent();
         }
+
     }
 }
