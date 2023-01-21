@@ -31,8 +31,9 @@
             Grid.Row="0"
             Grid.Column="1"
             Content="Add new task"
-            Margin="0 0 20 0"
+            Margin="0 0 10 0"
             Background="GreenYellow"
+            Command="{Binding AddNewTaskCommand}"
             Style="{StaticResource PlanSettingsActionButtons}"/>
 
         <Grid Grid.Row="1" Grid.Column="0">
@@ -189,7 +190,7 @@
                                     <DataTemplate>
                                         <Border
                                             Style="{StaticResource MainMenuTableCellBorder}">
-                                            <TextBlock Style="{StaticResource TableCell}" Text="{Binding WeekTime}"/>
+                                            <TextBlock Style="{StaticResource TableCell}" Text="{Binding TimeSchedule}"/>
                                         </Border>
                                     </DataTemplate>
                                 </GridViewColumn.CellTemplate>
@@ -277,7 +278,7 @@
                 Grid.Column="1"
                 Style="{StaticResource PlanSettingsFieldLabelsBorder}">
                 <TextBox Style="{StaticResource PlanSettingsInputField}"
-                         Text="{Binding StartTime, UpdateSourceTrigger=PropertyChanged}"/>
+                         Text="{Binding StartTime, UpdateSourceTrigger=LostFocus}"/>
             </Border>
 
             <!-- End time -->
@@ -293,7 +294,7 @@
                 Grid.Column="1"
                 Style="{StaticResource PlanSettingsFieldLabelsBorder}">
                 <TextBox Style="{StaticResource PlanSettingsInputField}"
-                         Text="{Binding EndTime, UpdateSourceTrigger=PropertyChanged}"/>
+                         Text="{Binding EndTime, UpdateSourceTrigger=LostFocus}"/>
             </Border>
 
             <!-- Color -->
@@ -343,16 +344,40 @@
                          Text="{Binding AdditionalInfo, UpdateSourceTrigger=PropertyChanged}"/>
             </Border>
 
+            <StackPanel
+                Grid.Row="6"
+                Grid.Column="0"
+                Grid.ColumnSpan="2"
+                Orientation="Horizontal"
+                HorizontalAlignment="Left">
+
+                <Button 
+                    Content="Delete"
+                    Margin="10 0 0 0"
+                    Background="OrangeRed"
+                    Style="{StaticResource PlanSettingsActionButtons}"
+                />
+
+                <Button 
+                    Content="Modify"
+                    Margin="20 0 0 0"
+                    Background="LightSkyBlue"
+                    Style="{StaticResource PlanSettingsActionButtons}"
+                />
+            </StackPanel>
+
             <Button 
                 Grid.Row="6"
                 Grid.Column="0"
                 Grid.ColumnSpan="2"
-                Content="Delete"
-                Margin="10 0 0 0"
-                Background="OrangeRed"
+                Content="Back"
+                Margin="0 0 10 0"
+                Background="Yellow"
                 Style="{StaticResource PlanSettingsActionButtons}"
-                HorizontalAlignment="Left"/>
+                Width="200"
+            />
 
-        </Grid>
+
+</Grid>
     </Grid>
 </UserControl>

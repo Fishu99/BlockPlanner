@@ -19,5 +19,10 @@ namespace BlockPlanner.ViewModels
         public TaskDetailsViewModel(Task task) : base(task)
         {
         }
+
+        public TaskDetailsViewModel(Task task, int order) : base(task)
+        {
+            this.Order = order.ToString();
+        }
     }
 }

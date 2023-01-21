@@ -13,8 +13,17 @@ namespace BlockPlanner.ViewModels
     public class TaskViewModel : ViewModelBase
     {
         protected Task _task;
+        private string _taskOrder = "1";
 
-        public string Order => "10";
+        public string Order
+        {
+            get => _taskOrder;
+            set
+            {
+                _taskOrder = value;
+                OnPropertyChanged(nameof(Order));
+            }
+        }
 
         public string TaskName
         {
@@ -23,6 +32,7 @@ namespace BlockPlanner.ViewModels
         }
 
         public string WeekTime => string.Concat(_task.StartTime.ToString("d"), " - ", _task.EndTime.ToString("d"));
+        public string TimeSchedule => string.Concat(_task.StartTime.ToString("t"), " - ", _task.EndTime.ToString("t"));
 
         public DateTime StartTime
         {
@@ -52,9 +62,21 @@ namespace BlockPlanner.ViewModels
             }
         }
 
+        public Color BlockColor
+        {
+            get => _task.BlockColor;
+            set => _task.BlockColor = value;
+        }
+
         public TaskViewModel(Task task)
         {
-            _task = task;
+            //_task = task;
+            _task = new Task(
+                task.TaskName,
+                task.StartTime,
+                task.EndTime,
+                task.BlockColor,
+                task.AdditionalInfo);
         }
     }
 }
