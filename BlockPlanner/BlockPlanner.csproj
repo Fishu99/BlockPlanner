@@ -37,6 +37,8 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -59,6 +61,7 @@
     <Compile Include="Commands\CommandBase.cs" />
     <Compile Include="Commands\DaySelectCommand.cs" />
     <Compile Include="Commands\NavigateCommand.cs" />
+    <Compile Include="Commands\SelectColorCommand.cs" />
     <Compile Include="Exceptions\ColorConversionFailedException.cs" />
     <Compile Include="Exceptions\TaskCollisionException.cs" />
     <Compile Include="ViewModels\DayPlanViewModel.cs" />

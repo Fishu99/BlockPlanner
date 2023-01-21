@@ -322,7 +322,8 @@
                     Margin="10" />
 
                 <Border Grid.Row="0" Grid.Column="1" Margin="10">
-                    <Button Content="Select color" Style="{StaticResource PlanSettingsSetColorButton}"/>
+                    <Button Content="Select color" Style="{StaticResource PlanSettingsSetColorButton}" 
+                            Command="{Binding SelectColorCommand}"/>
                 </Border>
 
             </Grid>

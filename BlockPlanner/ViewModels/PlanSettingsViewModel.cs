@@ -25,7 +25,7 @@ namespace BlockPlanner.ViewModels
         private ICommand DaySelectCommand { get; }
         private ICommand TaskSelectCommand { get; }
         public ICommand AddNewTaskCommand { get; }
-        private ICommand SelectColorCommand { get; }
+        public ICommand SelectColorCommand { get; }
         private ICommand DeleteTaskCommand { get; }
 
 
@@ -85,7 +85,11 @@ namespace BlockPlanner.ViewModels
         public string Color
         {
             get => _selectedTask == null ? "#FFFFFF" : _selectedTask.Color;
-            set => _selectedTask.Color=value;
+            set
+            {
+                _selectedTask.Color = value;
+                OnPropertyChanged(nameof(Color));
+            }
         }
 
         public string AdditionalInfo
@@ -137,6 +141,7 @@ namespace BlockPlanner.ViewModels
             }
 
             AddNewTaskCommand = new AddNewTaskCommand(_plan.ScheduledDays, this);
+            SelectColorCommand = new SelectColorCommand(this);
         }
 
     }

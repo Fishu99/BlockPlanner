@@ -65,7 +65,11 @@ namespace BlockPlanner.ViewModels
         public Color BlockColor
         {
             get => _task.BlockColor;
-            set => _task.BlockColor = value;
+            set
+            {
+                _task.BlockColor = value;
+                OnPropertyChanged(nameof(BlockColor));
+            }
         }
 
         public TaskViewModel(Task task)
