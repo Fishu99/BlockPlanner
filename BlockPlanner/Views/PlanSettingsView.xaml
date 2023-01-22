@@ -169,6 +169,7 @@
                             <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
                             <Setter Property="FontWeight" Value="Normal"/>
                             <Setter Property="FontSize" Value="28"/>
+                            <Setter Property="IsSelected" Value="{Binding IsGroovy}"/>
                         </Style>
                     </ListView.ItemContainerStyle>
 

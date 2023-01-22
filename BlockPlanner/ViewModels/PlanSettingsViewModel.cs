@@ -95,7 +95,11 @@ namespace BlockPlanner.ViewModels
         public string AdditionalInfo
         {
             get => _selectedTask == null ? "" : _selectedTask.AdditionalInfo;
-            set => _selectedTask.AdditionalInfo = value;
+            set
+            {
+                _selectedTask.AdditionalInfo = value;
+                OnPropertyChanged(nameof(AdditionalInfo));
+            }
         }
 
         public int CurrentSelectedDayId
@@ -112,6 +116,11 @@ namespace BlockPlanner.ViewModels
         public TaskDetailsViewModel SelectedTask
         {
             get => _selectedTask;
+            set
+            {
+                _selectedTask = value;
+                OnPropertyChanged(nameof(SelectedTask));
+            }
         }
 
         public PlanSettingsViewModel()
@@ -124,6 +133,7 @@ namespace BlockPlanner.ViewModels
             _plan = plan;
             _planName = plan.Name;
             _currentTasks = new ObservableCollection<TaskViewModel>();
+
 
             //For tests;
             if (plan.ScheduledDays != null)
@@ -140,9 +150,32 @@ namespace BlockPlanner.ViewModels
                 _selectedTask = new TaskDetailsViewModel(testTask);
             }
 
+            foreach (var task in _currentTasks)
+            {
+                task.PropertyChanged += (sender, EventArgs) =>
+                {
+                    if (EventArgs.PropertyName == "IsGroovy")
+                    {
+                        Console.WriteLine("New task selected (" + _selectedTask.StartTime + ")");
+                        this.SelectedTask = (TaskDetailsViewModel)sender;
+                        this.TaskName = _selectedTask.TaskName;
+                        this.StartTime = _selectedTask.StartTime.ToString("t");
+                        this.EndTime = _selectedTask.EndTime.ToString("t");
+                        this.Color = _selectedTask.Color;
+                        this.AdditionalInfo = _selectedTask.AdditionalInfo;
+
+                        Console.WriteLine("Now is (" + _selectedTask.StartTime + ")");
+                    }
+                };
+            }
+
             AddNewTaskCommand = new AddNewTaskCommand(_plan.ScheduledDays, this);
             SelectColorCommand = new SelectColorCommand(this);
         }
 
+        private void ChangeCurrentlySelectedTask(object sender, EventArgs args)
+        {
+
+        }
     }
 }

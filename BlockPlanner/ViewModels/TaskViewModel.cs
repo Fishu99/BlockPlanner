@@ -14,6 +14,7 @@ namespace BlockPlanner.ViewModels
     {
         protected Task _task;
         private string _taskOrder = "1";
+        private bool _isSelected = false;
 
         public string Order
         {
@@ -72,6 +73,16 @@ namespace BlockPlanner.ViewModels
             }
         }
 
+        public bool IsGroovy
+        {
+            get => _isSelected;
+            set
+            {
+                _isSelected = value;
+                OnPropertyChanged(nameof(IsGroovy));
+            }
+        }
+
         public TaskViewModel(Task task)
         {
             //_task = task;
@@ -82,5 +93,6 @@ namespace BlockPlanner.ViewModels
                 task.BlockColor,
                 task.AdditionalInfo);
         }
+
     }
 }
