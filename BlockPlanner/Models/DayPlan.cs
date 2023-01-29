@@ -30,7 +30,7 @@ namespace BlockPlanner.Models
             {
                 foreach (var existingTask in _dayTasks)
                 {
-                    if (IsScheduledBetween(existingTask, task))
+                    if (Task.IsScheduledBetween(existingTask, task))
                     {
                         throw new TaskCollisionException();
                     }
@@ -43,32 +43,6 @@ namespace BlockPlanner.Models
 
                 _dayTasks.Insert(placementId, task);
             }
-
-
-            // TaskName { get; set; }
-            // StartTime { get; set; }
-            // EndTime { get; set; }
-            // BlockColor { get; set; }
-            // AdditionalInfo { get; set; }
-
-
-
-        }
-
-        private bool IsScheduledBetween(Task existingTask, Task newTask)
-        {
-            if (existingTask == null || newTask == null)
-            {
-                Console.WriteLine("Error - tasks were null");
-                return false;
-            }
-
-            if (newTask.EndTime < existingTask.StartTime
-                || newTask.StartTime > existingTask.EndTime)
-            {
-                return false;
-            }
-            return true;
         }
     }
 }

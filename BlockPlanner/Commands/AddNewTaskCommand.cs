@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Drawing;
 using System.Linq;
 using System.Security.Policy;
 using System.Text;
@@ -17,9 +18,9 @@ namespace BlockPlanner.Commands
     public class AddNewTaskCommand: CommandBase
     {
         private PlanSettingsViewModel _planSettingsViewModel;
-        private TaskDetailsViewModel _selectedTask;
+        private TaskDetailsViewModel _newTaskDetails;
 
-        public AddNewTaskCommand(List<DayPlan> scheduledDays, PlanSettingsViewModel planSettingsViewModel)
+        public AddNewTaskCommand(PlanSettingsViewModel planSettingsViewModel)
         {
             _planSettingsViewModel = planSettingsViewModel;
 
@@ -41,24 +42,23 @@ namespace BlockPlanner.Commands
 
         public override void Execute(object parameter)
         {
-            _selectedTask = _planSettingsViewModel.SelectedTask;
-            var task = new Task(_selectedTask.TaskName,
-                _selectedTask.StartTime,
-                _selectedTask.EndTime,
-                _selectedTask.BlockColor,
-                _selectedTask.AdditionalInfo);
+            _newTaskDetails = _planSettingsViewModel.SelectedTask;
+            var task = new Task(_newTaskDetails.TaskName,
+                _newTaskDetails.StartTime,
+                _newTaskDetails.EndTime,
+                _newTaskDetails.BlockColor,
+                _newTaskDetails.AdditionalInfo);
 
             try
             {
-                DayPlan curPlan = _planSettingsViewModel.CurrentDayPlan; //_scheduledDays[(int)_currentWeekDay];
-
+                DayPlan curPlan = _planSettingsViewModel.CurrentDayPlan;
                 curPlan.AddNewTask(task, out int placementId);
-                UpdateCurrentTasks(_planSettingsViewModel.CurrentTasks, task, placementId);
+                UpdateCurrentTasks(task, placementId);
 
                 MessageBox.Show("Successfully added new task.", "Success", MessageBoxButton.OK,
                     MessageBoxImage.Information);
             }
-            catch (TaskCollisionException ex)
+            catch (TaskCollisionException)
             {
                 MessageBox.Show("New task time interval conflicts with one of the existing tasks", "Error",
                     MessageBoxButton.OK, MessageBoxImage.Error);
@@ -66,17 +66,18 @@ namespace BlockPlanner.Commands
 
         }
 
-        private void UpdateCurrentTasks(ObservableCollection<TaskViewModel> currentTasks, Task task, int placementId)
+        private void UpdateCurrentTasks(Task task, int placementId)
         {
+            ObservableCollection<TaskViewModel> currentTasks = _planSettingsViewModel.CurrentTasks;
             if (currentTasks == null)
             {
                 throw new NullReferenceException("CurrentTasks were null");
             }
-            currentTasks.Insert(placementId, new TaskViewModel(task));
-            for (var elementId = 0; elementId < currentTasks.Count; elementId++)
-            {
-                currentTasks[elementId].Order = (elementId + 1).ToString();
-            }
+            TaskDetailsViewModel newTask = new TaskDetailsViewModel(task);
+            newTask.PropertyChanged += AddTaskSelectionSubscription;
+            currentTasks.Insert(placementId, newTask);
+            _planSettingsViewModel.UpdateOrderId();
+            _planSettingsViewModel.SelectedTask = new TaskDetailsViewModel(newTask); ;
         }
 
         private void OnViewModelPropertyChanged(object sender, PropertyChangedEventArgs e)
@@ -91,6 +92,25 @@ namespace BlockPlanner.Commands
             {
                 OnCanExecutedChanged();
             }
+        }
+
+        private void AddTaskSelectionSubscription(object sender, PropertyChangedEventArgs args)
+        {
+            var senderObj = (TaskDetailsViewModel)sender;
+            if (args.PropertyName != "IsGroovy" || !senderObj.IsGroovy) return;
+
+            Console.WriteLine("New task selected (" + _newTaskDetails.StartTime + ")");
+
+            TaskDetailsViewModel taskDetails = new TaskDetailsViewModel(senderObj);
+
+            _planSettingsViewModel.SelectedTask = taskDetails;
+            _planSettingsViewModel.TaskName = taskDetails.TaskName;
+            _planSettingsViewModel.StartTime = taskDetails.StartTime.ToString("t");
+            _planSettingsViewModel.EndTime = taskDetails.EndTime.ToString("t");
+            _planSettingsViewModel.Color = taskDetails.Color;
+            _planSettingsViewModel.AdditionalInfo = taskDetails.AdditionalInfo;
+
+            Console.WriteLine("Now is (" + _newTaskDetails.StartTime + ")");
         }
     }
 }

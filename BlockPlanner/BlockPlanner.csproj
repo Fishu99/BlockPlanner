@@ -60,6 +60,7 @@
     <Compile Include="Commands\AddNewTaskCommand.cs" />
     <Compile Include="Commands\CommandBase.cs" />
     <Compile Include="Commands\DaySelectCommand.cs" />
+    <Compile Include="Commands\ModifyTaskCommand.cs" />
     <Compile Include="Commands\NavigateCommand.cs" />
     <Compile Include="Commands\SelectColorCommand.cs" />
     <Compile Include="Exceptions\ColorConversionFailedException.cs" />

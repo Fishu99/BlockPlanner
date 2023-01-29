@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BlockPlanner.Exceptions;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -30,6 +31,83 @@ namespace BlockPlanner.Models
             EndTime = endTime;
             BlockColor = blockColor;
             AdditionalInfo = additionalInfo;
+        }
+
+        public bool UpdateTaskInformation(Task newData, List<Task> dayTasks, out int placementId)
+        {
+            Console.WriteLine(this);
+            bool isChanged = false;
+            placementId = 0;
+            int taskId = 0;
+            if (StartTime != newData.StartTime || EndTime != newData.EndTime)
+            { 
+                if (dayTasks != null)
+                {
+                    foreach (var existingTask in dayTasks)
+                    {
+                        if (existingTask == this)
+                        {
+                            taskId = placementId;
+                            continue;
+                        }
+                        if (IsScheduledBetween(existingTask, newData))
+                        {
+                            throw new TaskCollisionException();
+                        }
+
+                        if (newData.StartTime > existingTask.EndTime)
+                        {
+                            placementId++;
+                        }
+                    }
+                    isChanged = true;
+                    StartTime = newData.StartTime;
+                    EndTime = newData.EndTime;
+                }
+            }
+
+            if (TaskName != newData.TaskName)
+            {
+                isChanged = true;
+                TaskName = newData.TaskName;
+            }
+
+            if (BlockColor != newData.BlockColor)
+            {
+                isChanged = true;
+                BlockColor = newData.BlockColor;
+            }
+
+            if (AdditionalInfo != newData.AdditionalInfo)
+            {
+                isChanged = true;
+                AdditionalInfo = newData.AdditionalInfo;
+            }
+
+            Console.WriteLine("Modified: " + this);
+            return isChanged;
+        }
+        
+        public static bool IsScheduledBetween(Task existingTask, Task newTask)
+        {
+            if (existingTask == null || newTask == null)
+            {
+                Console.WriteLine("Error - tasks were null");
+                return false;
+            }
+
+            if (newTask.EndTime < existingTask.StartTime
+                || newTask.StartTime > existingTask.EndTime)
+            {
+                return false;
+            }
+            return true;
+        }
+
+        public override string ToString()
+        {
+        return
+            $"Task {TaskName} info, start {StartTime:t} - end {EndTime:t}, color {BlockColor}, additionalInfo is: {AdditionalInfo}";
         }
     }
 }

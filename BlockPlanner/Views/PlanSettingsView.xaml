@@ -365,6 +365,7 @@
                     Margin="20 0 0 0"
                     Background="LightSkyBlue"
                     Style="{StaticResource PlanSettingsActionButtons}"
+                    Command="{Binding ModifyTaskCommand}"
                 />
             </StackPanel>
 

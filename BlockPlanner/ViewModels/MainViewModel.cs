@@ -21,17 +21,17 @@ namespace BlockPlanner.ViewModels
             scheduledDayPlans.Add(testDayPlan);
 
             DateTime today = DateTime.Now;
-            int timeOffset = 12;
+            int timeOffset = 10;
             today = today.AddHours(-today.Hour + timeOffset);
 
 
-            Task testTask = new Task("TestowyTask", today, today.AddHours(1), (Color)ColorConverter.ConvertFromString("#86c676"), "AdditionalInfo");
-            Task testTask2 = new Task("TestowyTask2", today.AddHours(1), today.AddHours(2), (Color)ColorConverter.ConvertFromString("#e5182b"), "AdditionalInfo");
-            Task testTask3 = new Task("TestowyTask3", today.AddHours(3), today.AddHours(4), (Color)ColorConverter.ConvertFromString("#8800e6"), "AdditionalInfo");
+            Task testTask = new Task(".NET", today, today.AddHours(1), (Color)ColorConverter.ConvertFromString("#86c676"), "AdditionalInfo");
+            Task testTask2 = new Task("OR", today.AddHours(2), today.AddHours(3), (Color)ColorConverter.ConvertFromString("#e5182b"), "AdditionalInfo");
+            Task testTask3 = new Task("SOC", today.AddHours(5), today.AddHours(6), (Color)ColorConverter.ConvertFromString("#8800e6"), "AdditionalInfo");
             testDayPlan.DayTasks.Add(testTask);
             testDayPlan.DayTasks.Add(testTask2);
             testDayPlan.DayTasks.Add(testTask3);
-            CurrentViewModel = new PlanSettingsViewModel(new Plan("Tudududu", DateTime.Now, DateTime.Now, scheduledDayPlans));
+            CurrentViewModel = new PlanSettingsViewModel(new Plan("WeekPlan-01", DateTime.Now, DateTime.Now, scheduledDayPlans));
         }
     }
 }

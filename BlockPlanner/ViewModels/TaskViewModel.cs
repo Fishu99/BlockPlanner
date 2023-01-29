@@ -14,7 +14,7 @@ namespace BlockPlanner.ViewModels
     {
         protected Task _task;
         private string _taskOrder = "1";
-        private bool _isSelected = false;
+        private bool _isSelected;
 
         public string Order
         {
@@ -29,7 +29,11 @@ namespace BlockPlanner.ViewModels
         public string TaskName
         {
             get => _task.TaskName;
-            set => _task.TaskName = value;
+            set
+            {
+                _task.TaskName = value;
+                OnPropertyChanged(nameof(TaskName));
+            }
         }
 
         public string WeekTime => string.Concat(_task.StartTime.ToString("d"), " - ", _task.EndTime.ToString("d"));
@@ -38,12 +42,24 @@ namespace BlockPlanner.ViewModels
         public DateTime StartTime
         {
             get => _task.StartTime;
-            set => _task.StartTime = value;
+            set
+            {
+                _task.StartTime = value;
+                OnPropertyChanged(nameof(StartTime));
+                OnPropertyChanged(nameof(WeekTime));
+                OnPropertyChanged(nameof(TimeSchedule));
+            }
         }
         public DateTime EndTime
         {
             get => _task.EndTime;
-            set => _task.EndTime = value;
+            set
+            {
+                _task.EndTime = value;
+                OnPropertyChanged(nameof(EndTime));
+                OnPropertyChanged(nameof(WeekTime));
+                OnPropertyChanged(nameof(TimeSchedule));
+            }
         }
 
         public string Color
@@ -55,6 +71,7 @@ namespace BlockPlanner.ViewModels
                 {
                     var colorFromValue = (Color)ColorConverter.ConvertFromString(value);
                     _task.BlockColor = colorFromValue;
+                    OnPropertyChanged(nameof(BlockColor));
                 }
                 catch (NullReferenceException)
                 {
@@ -69,7 +86,9 @@ namespace BlockPlanner.ViewModels
             set
             {
                 _task.BlockColor = value;
+                Color = value.ToString();
                 OnPropertyChanged(nameof(BlockColor));
+                OnPropertyChanged(nameof(Color));
             }
         }
 
@@ -83,9 +102,13 @@ namespace BlockPlanner.ViewModels
             }
         }
 
+        public TaskViewModel()
+        {
+            _task = new Task();
+        }
+
         public TaskViewModel(Task task)
         {
-            //_task = task;
             _task = new Task(
                 task.TaskName,
                 task.StartTime,
@@ -94,5 +117,24 @@ namespace BlockPlanner.ViewModels
                 task.AdditionalInfo);
         }
 
+        public void UpdateDataFromTask(Task newTaskData)
+        {
+            if (newTaskData != null)
+            {
+                TaskName = newTaskData.TaskName;
+                StartTime = newTaskData.StartTime;
+                EndTime = newTaskData.EndTime;
+                BlockColor = newTaskData.BlockColor;
+            }
+        }
+
+        public void UpdateDataFromTask(Task newTaskData, int newOrderId)
+        {
+            if (newTaskData != null)
+            {
+                UpdateDataFromTask(newTaskData);
+                Order = newOrderId.ToString();
+            }
+        }
     }
 }

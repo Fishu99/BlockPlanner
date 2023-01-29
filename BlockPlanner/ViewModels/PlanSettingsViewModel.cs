@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -23,7 +24,7 @@ namespace BlockPlanner.ViewModels
         private WeekDay _currentSelectedDayId;
 
         private ICommand DaySelectCommand { get; }
-        private ICommand TaskSelectCommand { get; }
+        public ICommand ModifyTaskCommand { get; }
         public ICommand AddNewTaskCommand { get; }
         public ICommand SelectColorCommand { get; }
         private ICommand DeleteTaskCommand { get; }
@@ -147,35 +148,60 @@ namespace BlockPlanner.ViewModels
                 _currentTasks.Add(taskDetailsViewModelTest);
                 _currentTasks.Add(taskDetailsViewModelTest2);
                 _currentTasks.Add(taskDetailsViewModelTest3);
-                _selectedTask = new TaskDetailsViewModel(testTask);
+                _selectedTask = new TaskDetailsViewModel();
+                // _selectedTask.StartTime = _selectedTask.StartTime.AddHours(-10);
+                // _selectedTask.EndTime = _selectedTask.EndTime.AddHours(-9);
+                UpdateOrderId();
             }
 
             foreach (var task in _currentTasks)
             {
-                task.PropertyChanged += (sender, EventArgs) =>
-                {
-                    if (EventArgs.PropertyName == "IsGroovy")
-                    {
-                        Console.WriteLine("New task selected (" + _selectedTask.StartTime + ")");
-                        this.SelectedTask = (TaskDetailsViewModel)sender;
-                        this.TaskName = _selectedTask.TaskName;
-                        this.StartTime = _selectedTask.StartTime.ToString("t");
-                        this.EndTime = _selectedTask.EndTime.ToString("t");
-                        this.Color = _selectedTask.Color;
-                        this.AdditionalInfo = _selectedTask.AdditionalInfo;
-
-                        Console.WriteLine("Now is (" + _selectedTask.StartTime + ")");
-                    }
-                };
+                task.PropertyChanged += AddTaskSelectionSubscription;
             }
 
-            AddNewTaskCommand = new AddNewTaskCommand(_plan.ScheduledDays, this);
+            AddNewTaskCommand = new AddNewTaskCommand(this);
             SelectColorCommand = new SelectColorCommand(this);
+            ModifyTaskCommand = new ModifyTaskCommand(this);
         }
 
-        private void ChangeCurrentlySelectedTask(object sender, EventArgs args)
+
+        public static void UpdateOrderId(ObservableCollection<TaskViewModel> currentTasks)
         {
-
+            for (var elementId = 0; elementId < currentTasks.Count; elementId++)
+            {
+                currentTasks[elementId].Order = (elementId + 1).ToString();
+            }
         }
+        public void UpdateOrderId()
+        {
+            UpdateOrderId(CurrentTasks);
+        }
+
+        private void AddTaskSelectionSubscription(object sender, PropertyChangedEventArgs args)
+        {
+            var senderObj = (TaskDetailsViewModel)sender;
+            if (args.PropertyName != "IsGroovy" || !senderObj.IsGroovy) return;
+
+            Console.WriteLine("New task selected (" + _selectedTask.StartTime + ")");
+
+            SelectedTask = new TaskDetailsViewModel(senderObj);
+            TaskName = SelectedTask.TaskName;
+            StartTime = SelectedTask.StartTime.ToString("t");
+            EndTime = SelectedTask.EndTime.ToString("t");
+            Color = SelectedTask.Color;
+            AdditionalInfo = SelectedTask.AdditionalInfo;
+
+            Console.WriteLine("Now is (" + SelectedTask.StartTime + ")");
+        }
+
+        // public void ClearSelectedTaskData()
+        // {
+        //     TaskName = null;
+        //     StartTime = null;
+        //     EndTime = null;
+        //     Color = null;
+        //     AdditionalInfo = null;
+        //     // SelectedTask = null;
+        // }
     }
 }
