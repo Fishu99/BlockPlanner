@@ -26,6 +26,12 @@ namespace BlockPlanner.Commands
         public override void Execute(object parameter)
         {
             _selectedTask = _planSettingsViewModel.SelectedTask;
+            if (_selectedTask == null || _planSettingsViewModel.CurrentTasks.Count == 0)
+            {
+                MessageBox.Show("The task could not be modified because none was selected (or not exists)", "Error",
+                    MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
             var task = new Task(_selectedTask.TaskName,
                 _selectedTask.StartTime,
                 _selectedTask.EndTime,
