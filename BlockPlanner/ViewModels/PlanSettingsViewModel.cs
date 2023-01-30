@@ -27,7 +27,7 @@ namespace BlockPlanner.ViewModels
         public ICommand ModifyTaskCommand { get; }
         public ICommand AddNewTaskCommand { get; }
         public ICommand SelectColorCommand { get; }
-        private ICommand DeleteTaskCommand { get; }
+        public ICommand DeleteTaskCommand { get; }
 
 
         public string PlanName
@@ -121,6 +121,11 @@ namespace BlockPlanner.ViewModels
             {
                 _selectedTask = value;
                 OnPropertyChanged(nameof(SelectedTask));
+                OnPropertyChanged(nameof(TaskName));
+                OnPropertyChanged(nameof(StartTime));
+                OnPropertyChanged(nameof(EndTime));
+                OnPropertyChanged(nameof(Color));
+                OnPropertyChanged(nameof(AdditionalInfo));
             }
         }
 
@@ -148,7 +153,7 @@ namespace BlockPlanner.ViewModels
                 _currentTasks.Add(taskDetailsViewModelTest);
                 _currentTasks.Add(taskDetailsViewModelTest2);
                 _currentTasks.Add(taskDetailsViewModelTest3);
-                _selectedTask = new TaskDetailsViewModel();
+                _selectedTask = new TaskDetailsViewModel(taskDetailsViewModelTest2);
                 // _selectedTask.StartTime = _selectedTask.StartTime.AddHours(-10);
                 // _selectedTask.EndTime = _selectedTask.EndTime.AddHours(-9);
                 UpdateOrderId();
@@ -162,6 +167,7 @@ namespace BlockPlanner.ViewModels
             AddNewTaskCommand = new AddNewTaskCommand(this);
             SelectColorCommand = new SelectColorCommand(this);
             ModifyTaskCommand = new ModifyTaskCommand(this);
+            DeleteTaskCommand = new DeleteTaskCommand(this);
         }
 
 
@@ -193,15 +199,5 @@ namespace BlockPlanner.ViewModels
 
             Console.WriteLine("Now is (" + SelectedTask.StartTime + ")");
         }
-
-        // public void ClearSelectedTaskData()
-        // {
-        //     TaskName = null;
-        //     StartTime = null;
-        //     EndTime = null;
-        //     Color = null;
-        //     AdditionalInfo = null;
-        //     // SelectedTask = null;
-        // }
     }
 }

@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Media;
+using BlockPlanner.Utilities;
 using Task = BlockPlanner.Models.Task;
 
 namespace BlockPlanner.ViewModels
@@ -63,6 +65,17 @@ namespace BlockPlanner.ViewModels
             OnPropertyChanged(nameof(BlockColor));
             OnPropertyChanged(nameof(AdditionalInfo));
             OnPropertyChanged(nameof(TaskName));
+        }
+
+        public static TaskDetailsViewModel GetDefaultTask()
+        {
+            const int timeOffset = 12;
+            var today = DateTime.Now;
+            today = today.AddHours(-today.Hour + timeOffset);
+
+            var task = new Task("NewTask", today, today, ColorUtilities.GetRandomColor(), "NewTask additional informations");
+            var taskDetailsViewModel = new TaskDetailsViewModel(task);
+            return taskDetailsViewModel;
         }
     }
 }

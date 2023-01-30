@@ -15,7 +15,7 @@ namespace BlockPlanner.Commands
 {
     public class ModifyTaskCommand : CommandBase
     {
-        private PlanSettingsViewModel _planSettingsViewModel;
+        private readonly PlanSettingsViewModel _planSettingsViewModel;
         private TaskDetailsViewModel _selectedTask;
 
         public ModifyTaskCommand(PlanSettingsViewModel planSettingsViewModel)
@@ -48,8 +48,6 @@ namespace BlockPlanner.Commands
                     _planSettingsViewModel.UpdateOrderId();
                     _planSettingsViewModel.CurrentDayPlan.DayTasks.RemoveAt(taskToModifyId);
                     _planSettingsViewModel.CurrentDayPlan.DayTasks.Insert(int.Parse(taskToModifyFromView.Order)-1, taskToModify);
-
-                    // _selectedTask.AllPropertyChangedEventInvoke();
                     _planSettingsViewModel.SelectedTask = new TaskDetailsViewModel(taskToModifyFromView);
                     MessageBox.Show("Successfully modified task.", "Success", MessageBoxButton.OK,
                         MessageBoxImage.Information);

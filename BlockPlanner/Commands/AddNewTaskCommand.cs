@@ -77,7 +77,7 @@ namespace BlockPlanner.Commands
             newTask.PropertyChanged += AddTaskSelectionSubscription;
             currentTasks.Insert(placementId, newTask);
             _planSettingsViewModel.UpdateOrderId();
-            _planSettingsViewModel.SelectedTask = new TaskDetailsViewModel(newTask); ;
+            _planSettingsViewModel.SelectedTask = new TaskDetailsViewModel(newTask);
         }
 
         private void OnViewModelPropertyChanged(object sender, PropertyChangedEventArgs e)
