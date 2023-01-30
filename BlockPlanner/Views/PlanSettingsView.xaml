@@ -311,6 +311,7 @@
                 Grid.Column="1">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"></ColumnDefinition>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
                     <ColumnDefinition Width="2*"></ColumnDefinition>
                 </Grid.ColumnDefinitions>
 
@@ -323,6 +324,11 @@
                     Margin="10" />
 
                 <Border Grid.Row="0" Grid.Column="1" Margin="10">
+                    <Button Content="Random" Style="{StaticResource PlanSettingsSetColorButton}" 
+                            Command="{Binding RandomizeColorCommand}"/>
+                </Border>
+
+                <Border Grid.Row="0" Grid.Column="2" Margin="10">
                     <Button Content="Select color" Style="{StaticResource PlanSettingsSetColorButton}" 
                             Command="{Binding SelectColorCommand}"/>
                 </Border>

@@ -28,6 +28,7 @@ namespace BlockPlanner.ViewModels
         public ICommand AddNewTaskCommand { get; }
         public ICommand SelectColorCommand { get; }
         public ICommand DeleteTaskCommand { get; }
+        public ICommand RandomizeColorCommand { get; }
 
 
         public string PlanName
@@ -168,6 +169,7 @@ namespace BlockPlanner.ViewModels
             SelectColorCommand = new SelectColorCommand(this);
             ModifyTaskCommand = new ModifyTaskCommand(this);
             DeleteTaskCommand = new DeleteTaskCommand(this);
+            RandomizeColorCommand = new RandomizeColorCommand(this);
         }
 
 

@@ -63,6 +63,7 @@
     <Compile Include="Commands\DeleteTaskCommand.cs" />
     <Compile Include="Commands\ModifyTaskCommand.cs" />
     <Compile Include="Commands\NavigateCommand.cs" />
+    <Compile Include="Commands\RandomizeColorCommand.cs" />
     <Compile Include="Commands\SelectColorCommand.cs" />
     <Compile Include="Exceptions\ColorConversionFailedException.cs" />
     <Compile Include="Exceptions\TaskCollisionException.cs" />
