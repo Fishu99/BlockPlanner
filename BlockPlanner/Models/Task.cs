@@ -35,31 +35,28 @@ namespace BlockPlanner.Models
 
         public bool UpdateTaskInformation(Task newData, List<Task> dayTasks, out int placementId)
         {
-            Console.WriteLine(this);
-            bool isChanged = false;
             placementId = 0;
-            int taskId = 0;
-            if (StartTime != newData.StartTime || EndTime != newData.EndTime)
-            { 
-                if (dayTasks != null)
-                {
-                    foreach (var existingTask in dayTasks)
-                    {
-                        if (existingTask == this)
-                        {
-                            taskId = placementId;
-                            continue;
-                        }
-                        if (IsScheduledBetween(existingTask, newData))
-                        {
-                            throw new TaskCollisionException();
-                        }
+            var isChanged = false;
 
-                        if (newData.StartTime > existingTask.EndTime)
-                        {
-                            placementId++;
-                        }
+            Console.WriteLine(this);
+            var isTimeStampModificationRequired = StartTime != newData.StartTime || EndTime != newData.EndTime;
+            if (dayTasks != null)
+            {
+                foreach (var existingTask in dayTasks.Where(existingTask => existingTask != this))
+                {
+                    if (IsScheduledBetween(existingTask, newData))
+                    {
+                        throw new TaskCollisionException();
                     }
+                    if (newData.StartTime > existingTask.EndTime)
+                    {
+                        placementId++;
+                    }
+                }
+
+                if (isTimeStampModificationRequired)
+                {
+
                     isChanged = true;
                     StartTime = newData.StartTime;
                     EndTime = newData.EndTime;
