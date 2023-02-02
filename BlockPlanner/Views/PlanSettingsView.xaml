@@ -2,12 +2,22 @@
     x:Class="BlockPlanner.Views.PlanSettingsView"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:converters="clr-namespace:BlockPlanner.Converters"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="clr-namespace:BlockPlanner.Views"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:viewModels="clr-namespace:BlockPlanner.ViewModels"
     d:DesignHeight="1080"
     d:DesignWidth="1920"
     mc:Ignorable="d">
+
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <converters:ButtonSelectionColorConverter x:Key="ButtonSelectionColorConverter" />
+        </ResourceDictionary>
+    </UserControl.Resources>
+
+
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="1*" />
@@ -110,38 +120,67 @@
                 Orientation="Horizontal">
 
                 <Border Style="{StaticResource PlanSettingsWeekDayLabelsBorder}">
-                    <Button Content="Mon" Style="{StaticResource PlanSettingsWeekDayButtons}" />
-                    <!-- <TextBlock Text="Mon" Style="{StaticResource PlanSettingsFieldLabels}"/> -->
+                    <Button
+                        Background="{Binding CurrentSelectedDayId, Converter={StaticResource ButtonSelectionColorConverter}, ConverterParameter='Mon'}"
+                        Command="{Binding DaySelectCommand}"
+                        CommandParameter="Mon"
+                        Content="Mon"
+                        Style="{StaticResource PlanSettingsWeekDayButtons}" />
+                </Border>
+                <!--  Background="{Binding Source={RelativeSource AncestorType={x:Type viewModels:PlanSettingsViewModel}}, Path=CurrentSelectedDayId, Converter={StaticResource ButtonSelectionColorConverter}, ConverterParameter='{Binding RelativeSource={RelativeSource Self}, Path=CommandParameter}'}"  -->
+
+                <Border Style="{StaticResource PlanSettingsWeekDayLabelsBorder}">
+                    <Button
+                        Background="{Binding CurrentSelectedDayId, Converter={StaticResource ButtonSelectionColorConverter}, ConverterParameter='Tue'}"
+                        Command="{Binding DaySelectCommand}"
+                        CommandParameter="Tue"
+                        Content="Tue"
+                        Style="{StaticResource PlanSettingsWeekDayButtons}" />
                 </Border>
 
                 <Border Style="{StaticResource PlanSettingsWeekDayLabelsBorder}">
-                    <Button Content="Tue" Style="{StaticResource PlanSettingsWeekDayButtons}" />
-                    <!-- <TextBlock Text="Tue" Style="{StaticResource PlanSettingsFieldLabels}"/> -->
+                    <Button
+                        Background="{Binding CurrentSelectedDayId, Converter={StaticResource ButtonSelectionColorConverter}, ConverterParameter='Wed'}"
+                        Command="{Binding DaySelectCommand}"
+                        CommandParameter="Wed"
+                        Content="Wed"
+                        Style="{StaticResource PlanSettingsWeekDayButtons}" />
                 </Border>
 
                 <Border Style="{StaticResource PlanSettingsWeekDayLabelsBorder}">
-                    <Button Content="Wed" Style="{StaticResource PlanSettingsWeekDayButtons}" />
-                    <!-- <TextBlock Text="Wed" Style="{StaticResource PlanSettingsFieldLabels}"/> -->
+                    <Button
+                        Background="{Binding CurrentSelectedDayId, Converter={StaticResource ButtonSelectionColorConverter}, ConverterParameter='Thu'}"
+                        Command="{Binding DaySelectCommand}"
+                        CommandParameter="Thu"
+                        Content="Thu"
+                        Style="{StaticResource PlanSettingsWeekDayButtons}" />
                 </Border>
 
                 <Border Style="{StaticResource PlanSettingsWeekDayLabelsBorder}">
-                    <Button Content="Thu" Style="{StaticResource PlanSettingsWeekDayButtons}" />
-                    <!-- <TextBlock Text="Thu" Style="{StaticResource PlanSettingsFieldLabels}"/> -->
+                    <Button
+                        Background="{Binding CurrentSelectedDayId, Converter={StaticResource ButtonSelectionColorConverter}, ConverterParameter='Fri'}"
+                        Command="{Binding DaySelectCommand}"
+                        CommandParameter="Fri"
+                        Content="Fri"
+                        Style="{StaticResource PlanSettingsWeekDayButtons}" />
                 </Border>
 
                 <Border Style="{StaticResource PlanSettingsWeekDayLabelsBorder}">
-                    <Button Content="Fri" Style="{StaticResource PlanSettingsWeekDayButtons}" />
-                    <!-- <TextBlock Text="Fri" Style="{StaticResource PlanSettingsFieldLabels}"/> -->
+                    <Button
+                        Background="{Binding CurrentSelectedDayId, Converter={StaticResource ButtonSelectionColorConverter}, ConverterParameter='Sat'}"
+                        Command="{Binding DaySelectCommand}"
+                        CommandParameter="Sat"
+                        Content="Sat"
+                        Style="{StaticResource PlanSettingsWeekDayButtons}" />
                 </Border>
 
                 <Border Style="{StaticResource PlanSettingsWeekDayLabelsBorder}">
-                    <Button Content="Sat" Style="{StaticResource PlanSettingsWeekDayButtons}" />
-                    <!-- <TextBlock Text="Sat" Style="{StaticResource PlanSettingsFieldLabels}"/> -->
-                </Border>
-
-                <Border Style="{StaticResource PlanSettingsWeekDayLabelsBorder}">
-                    <Button Content="Sun" Style="{StaticResource PlanSettingsWeekDayButtons}" />
-                    <!-- <TextBlock Text="Sun" Style="{StaticResource PlanSettingsFieldLabels}"/> -->
+                    <Button
+                        Background="{Binding CurrentSelectedDayId, Converter={StaticResource ButtonSelectionColorConverter}, ConverterParameter='Sun'}"
+                        Command="{Binding DaySelectCommand}"
+                        CommandParameter="Sun"
+                        Content="Sun"
+                        Style="{StaticResource PlanSettingsWeekDayButtons}" />
                 </Border>
 
             </StackPanel>

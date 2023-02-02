@@ -65,8 +65,11 @@
     <Compile Include="Commands\NavigateCommand.cs" />
     <Compile Include="Commands\RandomizeColorCommand.cs" />
     <Compile Include="Commands\SelectColorCommand.cs" />
+    <Compile Include="Converters\ButtonSelectionColorConverter.cs" />
     <Compile Include="Exceptions\ColorConversionFailedException.cs" />
+    <Compile Include="Exceptions\InvalidSizeException.cs" />
     <Compile Include="Exceptions\TaskCollisionException.cs" />
+    <Compile Include="Exceptions\UnrecognizedWeekDayException.cs" />
     <Compile Include="Utilities\ColorUtilities.cs" />
     <Compile Include="ViewModels\DayPlanViewModel.cs" />
     <Compile Include="ViewModels\MainMenuViewModel.cs" />

@@ -23,14 +23,14 @@ namespace BlockPlanner.ViewModels
         private TaskDetailsViewModel _selectedTask;
         private WeekDay _currentSelectedDayId;
 
-        private ICommand DaySelectCommand { get; }
+        public ICommand DaySelectCommand { get; }
         public ICommand ModifyTaskCommand { get; }
         public ICommand AddNewTaskCommand { get; }
         public ICommand SelectColorCommand { get; }
         public ICommand DeleteTaskCommand { get; }
         public ICommand RandomizeColorCommand { get; }
 
-
+        public Plan Plan  => _plan;
         public string PlanName
         {
             get => _planName;
@@ -51,7 +51,11 @@ namespace BlockPlanner.ViewModels
             }
         }
 
-        public ObservableCollection<TaskViewModel> CurrentTasks => _currentTasks;
+        public ObservableCollection<TaskViewModel> CurrentTasks
+        {
+            get => _currentTasks;
+            set => _currentTasks = value;
+        }
 
 
         public string TaskName
@@ -107,7 +111,13 @@ namespace BlockPlanner.ViewModels
         public int CurrentSelectedDayId
         {
             get => (int)_currentSelectedDayId;
-            set => _currentSelectedDayId = (WeekDay)value;
+            set
+            {
+                _currentSelectedDayId = (WeekDay)value;
+                OnPropertyChanged(nameof(CurrentSelectedDayId));
+                OnPropertyChanged(nameof(CurrentDayPlan));
+                OnPropertyChanged(nameof(CurrentTasks));
+            }
         }
 
         public DayPlan CurrentDayPlan
@@ -145,12 +155,12 @@ namespace BlockPlanner.ViewModels
             //For tests;
             if (plan.ScheduledDays != null)
             {
-                Task testTask = plan.ScheduledDays[(int)WeekDay.Monday].DayTasks[0];
-                Task testTask2 = plan.ScheduledDays[(int)WeekDay.Monday].DayTasks[1];
-                Task testTask3= plan.ScheduledDays[(int)WeekDay.Monday].DayTasks[2];
-                TaskDetailsViewModel taskDetailsViewModelTest = new TaskDetailsViewModel(testTask, 1);
-                TaskDetailsViewModel taskDetailsViewModelTest2 = new TaskDetailsViewModel(testTask2, 2);
-                TaskDetailsViewModel taskDetailsViewModelTest3 = new TaskDetailsViewModel(testTask3, 3);
+                var testTask = plan.ScheduledDays[WeekDay.Monday.GetId()].DayTasks[0];
+                var testTask2 = plan.ScheduledDays[WeekDay.Monday.GetId()].DayTasks[1];
+                var testTask3= plan.ScheduledDays[WeekDay.Monday.GetId()].DayTasks[2];
+                var taskDetailsViewModelTest = new TaskDetailsViewModel(testTask, 1);
+                var taskDetailsViewModelTest2 = new TaskDetailsViewModel(testTask2, 2);
+                var taskDetailsViewModelTest3 = new TaskDetailsViewModel(testTask3, 3);
                 _currentTasks.Add(taskDetailsViewModelTest);
                 _currentTasks.Add(taskDetailsViewModelTest2);
                 _currentTasks.Add(taskDetailsViewModelTest3);
@@ -165,6 +175,7 @@ namespace BlockPlanner.ViewModels
                 task.PropertyChanged += AddTaskSelectionSubscription;
             }
 
+            DaySelectCommand = new DaySelectCommand(this);
             AddNewTaskCommand = new AddNewTaskCommand(this);
             SelectColorCommand = new SelectColorCommand(this);
             ModifyTaskCommand = new ModifyTaskCommand(this);
@@ -185,7 +196,7 @@ namespace BlockPlanner.ViewModels
             UpdateOrderId(CurrentTasks);
         }
 
-        private void AddTaskSelectionSubscription(object sender, PropertyChangedEventArgs args)
+        public void AddTaskSelectionSubscription(object sender, PropertyChangedEventArgs args)
         {
             var senderObj = (TaskDetailsViewModel)sender;
             if (args.PropertyName != "IsGroovy" || !senderObj.IsGroovy) return;

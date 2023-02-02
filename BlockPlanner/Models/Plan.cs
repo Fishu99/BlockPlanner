@@ -15,7 +15,16 @@ namespace BlockPlanner.Models
 
         public Plan()
         {
-            
+            ScheduledDays = new List<DayPlan>
+            {
+                new DayPlan(WeekDay.Monday),
+                new DayPlan(WeekDay.Tuesday),
+                new DayPlan(WeekDay.Wednesday),
+                new DayPlan(WeekDay.Thursday),
+                new DayPlan(WeekDay.Friday),
+                new DayPlan(WeekDay.Saturday),
+                new DayPlan(WeekDay.Sunday)
+            };
         }
 
         public Plan(string name, DateTime weekStartTime, DateTime weekEndTime, List<DayPlan> scheduledDays)
