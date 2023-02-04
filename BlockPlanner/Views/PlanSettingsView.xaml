@@ -54,6 +54,7 @@
                 <RowDefinition Height="*" />
                 <RowDefinition Height="*" />
                 <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
                 <RowDefinition Height="7*" />
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
@@ -63,6 +64,7 @@
 
             <!--  LeftSide  -->
 
+            <!--  Plan Name  -->
             <Border
                 Grid.Row="0"
                 Grid.Column="0"
@@ -80,6 +82,13 @@
                     Text="{Binding PlanName, UpdateSourceTrigger=PropertyChanged}" />
             </Border>
 
+            <!--  WeekSelection Widget  -->
+            <Border
+                Grid.Row="1"
+                Grid.Column="0"
+                Style="{StaticResource PlanSettingsFieldLabelsBorder}">
+                <TextBlock Style="{StaticResource PlanSettingsFieldLabels}" Text="Selected day" />
+            </Border>
             <Border
                 Grid.Row="1"
                 Grid.Column="1"
@@ -88,16 +97,24 @@
                 VerticalAlignment="Stretch">
 
                 <DatePicker
+                    HorizontalAlignment="Stretch"
+                    VerticalAlignment="Stretch"
                     VerticalContentAlignment="Center"
                     Background="White"
                     CalendarStyle="{StaticResource StyleCalendar}"
                     FirstDayOfWeek="Monday"
                     FontSize="30"
-                    Language="en-US" />
+                    Language="en-US"
+                    Text="{Binding SelectedDate, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
+                    
+
+                </DatePicker>
             </Border>
 
+            <!--  Selected week summary  -->
+
             <Border
-                Grid.Row="1"
+                Grid.Row="2"
                 Grid.Column="0"
                 Style="{StaticResource PlanSettingsFieldLabelsBorder}">
                 <TextBlock Style="{StaticResource PlanSettingsFieldLabels}" Text="Selected week" />
@@ -105,6 +122,26 @@
 
             <Border
                 Grid.Row="2"
+                Grid.Column="1"
+                Margin="10"
+                HorizontalAlignment="Stretch"
+                VerticalAlignment="Stretch"
+                Background="White"
+                BorderBrush="LightGray"
+                BorderThickness="1">
+                <TextBlock
+                    Margin="1"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Background="White"
+                    FontSize="30"
+                    Text="{Binding WeekDateRange}" />
+            </Border>
+
+
+            <!--  DaySelect Actions Menu  -->
+            <Border
+                Grid.Row="3"
                 Grid.Column="0"
                 Grid.ColumnSpan="2"
                 Background="DarkGray"
@@ -113,7 +150,7 @@
             </Border>
 
             <StackPanel
-                Grid.Row="3"
+                Grid.Row="4"
                 Grid.Column="0"
                 Grid.ColumnSpan="2"
                 HorizontalAlignment="Center"
@@ -185,8 +222,9 @@
 
             </StackPanel>
 
+            <!--  Defined tasks in selected day  -->
             <Border
-                Grid.Row="4"
+                Grid.Row="5"
                 Grid.Column="0"
                 Grid.ColumnSpan="2"
                 Background="Gainsboro"
@@ -195,7 +233,7 @@
             </Border>
 
             <Border
-                Grid.Row="5"
+                Grid.Row="6"
                 Grid.Column="0"
                 Grid.ColumnSpan="2"
                 Style="{StaticResource PlanSettingsTaskListBorder}">

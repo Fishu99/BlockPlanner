@@ -10,6 +10,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using BlockPlanner.Commands;
 using BlockPlanner.Models;
+using BlockPlanner.Utilities;
 using Task = BlockPlanner.Models.Task;
 
 namespace BlockPlanner.ViewModels
@@ -18,7 +19,7 @@ namespace BlockPlanner.ViewModels
     {
         private Plan _plan;
         private string _planName;
-        private DateTime _weekStartDate;
+        private DateTime _selectedDate;
         private ObservableCollection<TaskViewModel> _currentTasks;
         private TaskDetailsViewModel _selectedTask;
         private WeekDay _currentSelectedDayId;
@@ -41,13 +42,24 @@ namespace BlockPlanner.ViewModels
             }
         }
 
-        public DateTime WeekStartDate
+        public DateTime SelectedDate
         {
-            get => _weekStartDate;
+            get => _selectedDate;
             set
             {
-                _weekStartDate = value;
-                OnPropertyChanged(nameof(WeekStartDate));
+                _selectedDate = value;
+                OnPropertyChanged(nameof(SelectedDate));
+                OnPropertyChanged(nameof(WeekDateRange));
+            }
+        }
+
+        public string WeekDateRange
+        {
+            get => DateTimeUtilities.GetWeekRange(_selectedDate);
+            set
+            {
+                WeekDateRange = value;
+                OnPropertyChanged(nameof(WeekDateRange));
             }
         }
 
@@ -150,7 +162,7 @@ namespace BlockPlanner.ViewModels
             _plan = plan;
             _planName = plan.Name;
             _currentTasks = new ObservableCollection<TaskViewModel>();
-
+            _selectedDate = plan.WeekStartTime;
 
             //For tests;
             if (plan.ScheduledDays != null)
