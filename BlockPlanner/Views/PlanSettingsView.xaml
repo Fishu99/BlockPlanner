@@ -105,10 +105,7 @@
                     FirstDayOfWeek="Monday"
                     FontSize="30"
                     Language="en-US"
-                    Text="{Binding SelectedDate, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
-                    
-
-                </DatePicker>
+                    Text="{Binding SelectedDate, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
             </Border>
 
             <!--  Selected week summary  -->

@@ -1,11 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.Drawing.Text;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using BlockPlanner.Exceptions;
 using BlockPlanner.Models;
+using BlockPlanner.Utilities;
 using BlockPlanner.ViewModels;
 
 namespace BlockPlanner.Commands
@@ -56,7 +59,12 @@ namespace BlockPlanner.Commands
 
                 _planSettingsViewModel.CurrentSelectedDayId = parameterWeekDayId;
                 _planSettingsViewModel.UpdateOrderId();
+
+                var date = DateTimeUtilities.ExtractWeekStartFromString(_planSettingsViewModel.WeekDateRange);
+                _planSettingsViewModel.UpdateSelectedDay(date.AddDays(parameterWeekDayId));
             }
+
+            
 
         }
     }

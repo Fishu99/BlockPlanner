@@ -22,7 +22,7 @@ namespace BlockPlanner.ViewModels
         private DateTime _selectedDate;
         private ObservableCollection<TaskViewModel> _currentTasks;
         private TaskDetailsViewModel _selectedTask;
-        private WeekDay _currentSelectedDayId;
+        private WeekDay _currentSelectedDay;
 
         public ICommand DaySelectCommand { get; }
         public ICommand ModifyTaskCommand { get; }
@@ -48,6 +48,8 @@ namespace BlockPlanner.ViewModels
             set
             {
                 _selectedDate = value;
+                var selectedDay = DateTimeUtilities.GetWeekDay(value);
+                DaySelectCommand.Execute(selectedDay.GetWeekDayShortName());
                 OnPropertyChanged(nameof(SelectedDate));
                 OnPropertyChanged(nameof(WeekDateRange));
             }
@@ -122,10 +124,10 @@ namespace BlockPlanner.ViewModels
 
         public int CurrentSelectedDayId
         {
-            get => (int)_currentSelectedDayId;
+            get => (int)_currentSelectedDay;
             set
             {
-                _currentSelectedDayId = (WeekDay)value;
+                _currentSelectedDay = (WeekDay)value;
                 OnPropertyChanged(nameof(CurrentSelectedDayId));
                 OnPropertyChanged(nameof(CurrentDayPlan));
                 OnPropertyChanged(nameof(CurrentTasks));
@@ -223,6 +225,12 @@ namespace BlockPlanner.ViewModels
             AdditionalInfo = SelectedTask.AdditionalInfo;
 
             Console.WriteLine("Now is (" + SelectedTask.StartTime + ")");
+        }
+
+        public void UpdateSelectedDay(DateTime newSelectedDay)
+        {
+            _selectedDate = newSelectedDay;
+            OnPropertyChanged(nameof(SelectedDate));
         }
     }
 }

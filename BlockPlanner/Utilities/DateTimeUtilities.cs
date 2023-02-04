@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using BlockPlanner.Models;
 
 namespace BlockPlanner.Utilities
 {
@@ -36,16 +37,24 @@ namespace BlockPlanner.Utilities
             }
             var regex = new Regex(@"[\d]+");
             var matches = regex.Matches(dateString);
-            if (matches.Count != 3) return DateTime.Now;
+            if (matches.Count != 6) return DateTime.Now;
             var day = int.Parse(matches[0].Value);
             var month = int.Parse(matches[1].Value);
             var year = int.Parse(matches[2].Value);
             var dateTime = new DateTime(year, month, day);
 
             return dateTime;
+        }
 
-            //Skonczyć regex i wyeksportować z niego pierwszą datę aby mogła byś ustawiona w propie dla WeekRange.
+        public static int GetWeekDayId(DateTime date)
+        {
+            var rawId = date.DayOfWeek == DayOfWeek.Sunday ? WeekLength : (int)date.DayOfWeek;
+            return rawId - 1;
+        }
 
+        public static WeekDay GetWeekDay(DateTime date)
+        {
+            return (WeekDay)GetWeekDayId(date);
         }
     }
 }

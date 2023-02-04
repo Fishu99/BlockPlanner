@@ -51,6 +51,29 @@ namespace BlockPlanner.Models
             }
         }
 
+        public static string GetWeekDayShortName(this WeekDay weekDay)
+        {
+            switch (weekDay)
+            {
+                case (WeekDay.Monday):
+                    return "Mon";
+                case (WeekDay.Tuesday):
+                    return "Tue";
+                case (WeekDay.Wednesday):
+                    return "Wed";
+                case (WeekDay.Thursday):
+                    return "Thu";
+                case (WeekDay.Friday):
+                    return ("Fri");
+                case (WeekDay.Saturday):
+                    return ("Sat");
+                case (WeekDay.Sunday):
+                    return ("Sun");
+                default:
+                    return "Mon";
+            }
+        }
+
         public static int GetId(this WeekDay day)
         {
             return (int)day;
