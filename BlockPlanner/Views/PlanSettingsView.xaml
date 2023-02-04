@@ -36,7 +36,7 @@
             HorizontalAlignment="Left"
             VerticalAlignment="Center"
             FontSize="44"
-            Text="Add new plan" />
+            Text="{Binding PlanCreatorTitle}" />
 
         <Button
             Grid.Row="0"
@@ -463,10 +463,11 @@
                 Grid.Row="6"
                 Grid.Column="0"
                 Grid.ColumnSpan="2"
-                Width="200"
+                Width="250"
                 Margin="0,0,10,0"
                 Background="Yellow"
-                Content="Back"
+                Command="{Binding BackToPreviousViewCommand}"
+                Content="Save and Exit"
                 Style="{StaticResource PlanSettingsActionButtons}" />
         </Grid>
     </Grid>

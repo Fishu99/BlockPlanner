@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Media;
 using BlockPlanner.Models;
+using BlockPlanner.Stores;
 using BlockPlanner.Utilities;
 using Task = BlockPlanner.Models.Task;
 
@@ -12,14 +13,31 @@ namespace BlockPlanner.ViewModels
 {
     public class MainViewModel : ViewModelBase
     {
-        public ViewModelBase CurrentViewModel { get; set; }
+        private readonly NavigationStore _navigationStore;
 
-        public MainViewModel(Scheduler scheduler)
+        public ViewModelBase CurrentViewModel
         {
-            SimulationInvoke(scheduler);
+            get => _navigationStore.CurrentViewModel;
+        
+            set
+            {
+                _navigationStore.CurrentViewModel = value;
+            }
         }
 
-        private void SimulationInvoke(Scheduler scheduler)
+        public MainViewModel(Scheduler scheduler, NavigationStore navigationStore)
+        {
+            _navigationStore = navigationStore;
+            _navigationStore.CurrentViewModelChanged += OnCurrentViewModelChanged;
+            // SimulationInvoke(scheduler);
+        }
+
+        private void OnCurrentViewModelChanged()
+        {
+            OnPropertyChanged(nameof(CurrentViewModel));
+        }
+
+        public static Plan SimulationInvoke()
         {
             var simulationPlan = new Plan();
             simulationPlan.Name = "WeekPlan-01";
@@ -37,7 +55,8 @@ namespace BlockPlanner.ViewModels
             testDayPlan.DayTasks.Add(testTask);
             testDayPlan.DayTasks.Add(testTask2);
             testDayPlan.DayTasks.Add(testTask3);
-            CurrentViewModel = new PlanSettingsViewModel(simulationPlan);
+            return simulationPlan;
+            // CurrentViewModel = new PlanSettingsViewModel(simulationPlan);
         }
     }
 }

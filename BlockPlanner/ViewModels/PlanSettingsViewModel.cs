@@ -6,10 +6,12 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Media;
 using BlockPlanner.Commands;
 using BlockPlanner.Models;
+using BlockPlanner.Stores;
 using BlockPlanner.Utilities;
 using Task = BlockPlanner.Models.Task;
 
@@ -17,8 +19,10 @@ namespace BlockPlanner.ViewModels
 {
     public class PlanSettingsViewModel : ViewModelBase
     {
+        private readonly NavigationStore _navigationStore;
         private Plan _plan;
         private string _planName;
+        private PlanCreatorMode _mode;
         private DateTime _selectedDate;
         private ObservableCollection<TaskViewModel> _currentTasks;
         private TaskDetailsViewModel _selectedTask;
@@ -30,8 +34,14 @@ namespace BlockPlanner.ViewModels
         public ICommand SelectColorCommand { get; }
         public ICommand DeleteTaskCommand { get; }
         public ICommand RandomizeColorCommand { get; }
+        public ICommand BackToPreviousViewCommand { get; }
 
         public Plan Plan  => _plan;
+
+        public string PlanCreatorTitle => _mode == PlanCreatorMode.Add ? 
+            "Plan creator (adding new plan)" :
+            "Plan creator (modifying existing plan)";
+
         public string PlanName
         {
             get => _planName;
@@ -155,17 +165,25 @@ namespace BlockPlanner.ViewModels
             }
         }
 
-        public PlanSettingsViewModel()
+        public PlanSettingsViewModel(NavigationStore navigationStore,
+            Plan plan,
+            PlanCreatorMode mode,
+            Func<MainMenuViewModel> createMainMenuViewModel,
+            Func<PlanDetailsViewModel> createPlanDetailsViewModel)
         {
-            
-        }
+            //For tests;
+            if (plan == null)
+            {
+                //TODO delete this
+                Console.WriteLine("Plan was null in plan settings initialization");
+            }
+            //-----
 
-        public PlanSettingsViewModel(Plan plan)
-        {
             _plan = plan;
             _planName = plan.Name;
             _currentTasks = new ObservableCollection<TaskViewModel>();
             _selectedDate = plan.WeekStartTime;
+            _mode = mode;
 
             //For tests;
             if (plan.ScheduledDays != null)
@@ -184,18 +202,25 @@ namespace BlockPlanner.ViewModels
                 // _selectedTask.EndTime = _selectedTask.EndTime.AddHours(-9);
                 UpdateOrderId();
             }
+            //-----
 
             foreach (var task in _currentTasks)
             {
                 task.PropertyChanged += AddTaskSelectionSubscription;
             }
 
+
+            _navigationStore = navigationStore;
             DaySelectCommand = new DaySelectCommand(this);
             AddNewTaskCommand = new AddNewTaskCommand(this);
             SelectColorCommand = new SelectColorCommand(this);
             ModifyTaskCommand = new ModifyTaskCommand(this);
             DeleteTaskCommand = new DeleteTaskCommand(this);
             RandomizeColorCommand = new RandomizeColorCommand(this);
+            BackToPreviousViewCommand = _mode == PlanCreatorMode.Add ? 
+                new NavigateCommand(_navigationStore, createMainMenuViewModel) : 
+                new NavigateCommand(_navigationStore, createPlanDetailsViewModel);
+
         }
 
 

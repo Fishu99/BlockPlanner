@@ -5,6 +5,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="clr-namespace:BlockPlanner.Views"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:viewmodels="clr-namespace:BlockPlanner.ViewModels"
     d:DesignHeight="1080"
     d:DesignWidth="1920"
     mc:Ignorable="d">
@@ -46,6 +47,7 @@
             HorizontalAlignment="Center"
             VerticalAlignment="Center"
             Background="YellowGreen"
+            Command="{Binding AddNewPlanCommand}"
             Content="Add new plan"
             FontSize="44" />
 
@@ -116,7 +118,10 @@
                     <GridViewColumn>
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
-                                <Button Content="Details" Style="{StaticResource DetailsButtonCell}" />
+                                <Button
+                                    Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type UserControl}}, Path=DataContext.ShowPlanDetailsCommand}"
+                                    Content="Details"
+                                    Style="{StaticResource DetailsButtonCell}" />
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>

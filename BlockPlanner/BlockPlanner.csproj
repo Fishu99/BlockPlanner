@@ -70,6 +70,8 @@
     <Compile Include="Exceptions\InvalidSizeException.cs" />
     <Compile Include="Exceptions\TaskCollisionException.cs" />
     <Compile Include="Exceptions\UnrecognizedWeekDayException.cs" />
+    <Compile Include="Models\PlanCreatorMode.cs" />
+    <Compile Include="Stores\NavigationStore.cs" />
     <Compile Include="Utilities\ColorUtilities.cs" />
     <Compile Include="Utilities\DateTimeUtilities.cs" />
     <Compile Include="ViewModels\DayPlanViewModel.cs" />
