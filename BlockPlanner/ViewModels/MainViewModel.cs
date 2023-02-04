@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Media;
 using BlockPlanner.Models;
+using BlockPlanner.Utilities;
 using Task = BlockPlanner.Models.Task;
 
 namespace BlockPlanner.ViewModels
@@ -22,8 +23,8 @@ namespace BlockPlanner.ViewModels
         {
             var simulationPlan = new Plan();
             simulationPlan.Name = "WeekPlan-01";
-            simulationPlan.WeekStartTime = DateTime.Now;
-            simulationPlan.WeekEndTime = DateTime.Now;
+            simulationPlan.WeekStartTime = DateTimeUtilities.GetWeekStart(DateTime.Now);
+            simulationPlan.WeekEndTime = DateTimeUtilities.GetWeekEnd(DateTime.Now);
             var testDayPlan = simulationPlan.ScheduledDays[WeekDay.Monday.GetId()];
 
             var today = DateTime.Now;

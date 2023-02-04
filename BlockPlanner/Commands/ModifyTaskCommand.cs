@@ -32,6 +32,9 @@ namespace BlockPlanner.Commands
                     MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
+
+
+            TaskViewModel.ValidateStartAndEndTime(_selectedTask);
             var task = new Task(_selectedTask.TaskName,
                 _selectedTask.StartTime,
                 _selectedTask.EndTime,

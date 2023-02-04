@@ -136,5 +136,17 @@ namespace BlockPlanner.ViewModels
                 Order = newOrderId.ToString();
             }
         }
+        public static void ValidateStartAndEndTime(TaskDetailsViewModel taskDetails)
+        {
+            if (taskDetails == null)
+            {
+                return;
+            }
+
+            if (taskDetails.StartTime.TimeOfDay > taskDetails.EndTime.TimeOfDay)
+            {
+                (taskDetails.StartTime, taskDetails.EndTime) = (taskDetails.EndTime, taskDetails.StartTime);
+            }
+        }
     }
 }

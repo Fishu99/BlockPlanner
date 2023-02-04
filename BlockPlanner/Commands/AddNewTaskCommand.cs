@@ -43,6 +43,7 @@ namespace BlockPlanner.Commands
         public override void Execute(object parameter)
         {
             _newTaskDetails = _planSettingsViewModel.SelectedTask;
+            TaskViewModel.ValidateStartAndEndTime(_newTaskDetails);
             var task = new Task(_newTaskDetails.TaskName,
                 _newTaskDetails.StartTime,
                 _newTaskDetails.EndTime,
@@ -65,6 +66,7 @@ namespace BlockPlanner.Commands
             }
 
         }
+        
 
         private void UpdateCurrentTasks(Task task, int placementId)
         {

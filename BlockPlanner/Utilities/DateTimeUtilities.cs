@@ -29,6 +29,12 @@ namespace BlockPlanner.Utilities
             return weekDayDate.AddDays(-subtractToWeekStart);
         }
 
+        public static DateTime GetWeekEnd(DateTime weekDayDate)
+        {
+            var weekStart = GetWeekStart(weekDayDate);
+            return weekStart.AddDays(WeekLength-1);
+        }
+
         public static DateTime ExtractWeekStartFromString(string dateString)
         {
             if (string.IsNullOrEmpty(dateString))

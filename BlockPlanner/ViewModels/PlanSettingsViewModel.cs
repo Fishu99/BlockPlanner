@@ -50,6 +50,7 @@ namespace BlockPlanner.ViewModels
                 _selectedDate = value;
                 var selectedDay = DateTimeUtilities.GetWeekDay(value);
                 DaySelectCommand.Execute(selectedDay.GetWeekDayShortName());
+                UpdatePlanWeekDates();
                 OnPropertyChanged(nameof(SelectedDate));
                 OnPropertyChanged(nameof(WeekDateRange));
             }
@@ -230,7 +231,14 @@ namespace BlockPlanner.ViewModels
         public void UpdateSelectedDay(DateTime newSelectedDay)
         {
             _selectedDate = newSelectedDay;
+            UpdatePlanWeekDates();
             OnPropertyChanged(nameof(SelectedDate));
+        }
+
+        private void UpdatePlanWeekDates()
+        {
+            _plan.WeekStartTime = DateTimeUtilities.GetWeekStart(_selectedDate);
+            _plan.WeekEndTime = DateTimeUtilities.GetWeekEnd(_selectedDate);
         }
     }
 }

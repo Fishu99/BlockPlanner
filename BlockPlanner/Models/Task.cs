@@ -39,7 +39,7 @@ namespace BlockPlanner.Models
             var isChanged = false;
 
             Console.WriteLine(this);
-            var isTimeStampModificationRequired = StartTime != newData.StartTime || EndTime != newData.EndTime;
+            var isTimeStampModificationRequired = StartTime.TimeOfDay != newData.StartTime.TimeOfDay || EndTime.TimeOfDay != newData.EndTime.TimeOfDay;
             if (dayTasks != null)
             {
                 foreach (var existingTask in dayTasks.Where(existingTask => existingTask != this))
@@ -48,7 +48,7 @@ namespace BlockPlanner.Models
                     {
                         throw new TaskCollisionException();
                     }
-                    if (newData.StartTime > existingTask.EndTime)
+                    if (newData.StartTime.TimeOfDay > existingTask.EndTime.TimeOfDay)
                     {
                         placementId++;
                     }
@@ -93,8 +93,8 @@ namespace BlockPlanner.Models
                 return false;
             }
 
-            if (newTask.EndTime < existingTask.StartTime
-                || newTask.StartTime > existingTask.EndTime)
+            if (newTask.EndTime.TimeOfDay < existingTask.StartTime.TimeOfDay
+                || newTask.StartTime.TimeOfDay > existingTask.EndTime.TimeOfDay)
             {
                 return false;
             }
