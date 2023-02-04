@@ -11,6 +11,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using BlockPlanner.Commands;
 using BlockPlanner.Models;
+using BlockPlanner.Services;
 using BlockPlanner.Stores;
 using BlockPlanner.Utilities;
 using Task = BlockPlanner.Models.Task;
@@ -19,7 +20,6 @@ namespace BlockPlanner.ViewModels
 {
     public class PlanSettingsViewModel : ViewModelBase
     {
-        private readonly NavigationStore _navigationStore;
         private Plan _plan;
         private string _planName;
         private PlanCreatorMode _mode;
@@ -69,11 +69,6 @@ namespace BlockPlanner.ViewModels
         public string WeekDateRange
         {
             get => DateTimeUtilities.GetWeekRange(_selectedDate);
-            set
-            {
-                WeekDateRange = value;
-                OnPropertyChanged(nameof(WeekDateRange));
-            }
         }
 
         public ObservableCollection<TaskViewModel> CurrentTasks
@@ -165,20 +160,19 @@ namespace BlockPlanner.ViewModels
             }
         }
 
-        public PlanSettingsViewModel(NavigationStore navigationStore,
-            Plan plan,
+        public PlanSettingsViewModel(Plan plan,
             PlanCreatorMode mode,
-            Func<MainMenuViewModel> createMainMenuViewModel,
-            Func<PlanDetailsViewModel> createPlanDetailsViewModel)
+            NavigationService createMainMenuNavigationService,
+            NavigationService createPlanDetailsNavigationService)
         {
             //For tests;
             if (plan == null)
             {
                 //TODO delete this
+                plan = new Plan();
                 Console.WriteLine("Plan was null in plan settings initialization");
             }
             //-----
-
             _plan = plan;
             _planName = plan.Name;
             _currentTasks = new ObservableCollection<TaskViewModel>();
@@ -198,8 +192,6 @@ namespace BlockPlanner.ViewModels
                 _currentTasks.Add(taskDetailsViewModelTest2);
                 _currentTasks.Add(taskDetailsViewModelTest3);
                 _selectedTask = new TaskDetailsViewModel(taskDetailsViewModelTest2);
-                // _selectedTask.StartTime = _selectedTask.StartTime.AddHours(-10);
-                // _selectedTask.EndTime = _selectedTask.EndTime.AddHours(-9);
                 UpdateOrderId();
             }
             //-----
@@ -209,8 +201,6 @@ namespace BlockPlanner.ViewModels
                 task.PropertyChanged += AddTaskSelectionSubscription;
             }
 
-
-            _navigationStore = navigationStore;
             DaySelectCommand = new DaySelectCommand(this);
             AddNewTaskCommand = new AddNewTaskCommand(this);
             SelectColorCommand = new SelectColorCommand(this);
@@ -218,8 +208,8 @@ namespace BlockPlanner.ViewModels
             DeleteTaskCommand = new DeleteTaskCommand(this);
             RandomizeColorCommand = new RandomizeColorCommand(this);
             BackToPreviousViewCommand = _mode == PlanCreatorMode.Add ? 
-                new NavigateCommand(_navigationStore, createMainMenuViewModel) : 
-                new NavigateCommand(_navigationStore, createPlanDetailsViewModel);
+                new NavigateCommand(createMainMenuNavigationService) : 
+                new NavigateCommand(createPlanDetailsNavigationService);
 
         }
 

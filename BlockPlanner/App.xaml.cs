@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Forms;
 using BlockPlanner.Models;
+using BlockPlanner.Services;
 using BlockPlanner.Stores;
 using BlockPlanner.ViewModels;
 using Application = System.Windows.Application;
@@ -45,24 +46,24 @@ namespace BlockPlanner
 
         private PlanDetailsViewModel CreatePlanDetailsViewModel()
         {
-            return new PlanDetailsViewModel(_navigationStore, CreateMainMenuViewModel, CreateModifyPlanSettingsViewModel);
+            return new PlanDetailsViewModel(new NavigationService(_navigationStore, CreateMainMenuViewModel), new NavigationService(_navigationStore, CreateModifyPlanSettingsViewModel));
         }
 
         private MainMenuViewModel CreateMainMenuViewModel()
         {
-            return new MainMenuViewModel(_navigationStore, CreatePlanDetailsViewModel, CreateAddPlanSettingsViewModel);
+            return new MainMenuViewModel(new NavigationService(_navigationStore, CreateAddPlanSettingsViewModel), new NavigationService(_navigationStore, CreatePlanDetailsViewModel));
         }
 
         private PlanSettingsViewModel CreateAddPlanSettingsViewModel()
         {
             var testPlan = MainViewModel.SimulationInvoke();
-            return new PlanSettingsViewModel(_navigationStore, testPlan, PlanCreatorMode.Add, CreateMainMenuViewModel, CreatePlanDetailsViewModel);
+            return new PlanSettingsViewModel(testPlan, PlanCreatorMode.Add, new NavigationService(_navigationStore, CreateMainMenuViewModel), new NavigationService(_navigationStore, CreatePlanDetailsViewModel));
         }
 
         private PlanSettingsViewModel CreateModifyPlanSettingsViewModel()
         {
             var testPlan = MainViewModel.SimulationInvoke();
-            return new PlanSettingsViewModel(_navigationStore, testPlan, PlanCreatorMode.Modify, CreateMainMenuViewModel, CreatePlanDetailsViewModel);
+            return new PlanSettingsViewModel(testPlan, PlanCreatorMode.Modify, new NavigationService(_navigationStore, CreateMainMenuViewModel), new NavigationService(_navigationStore, CreatePlanDetailsViewModel));
         }
     }
 }

@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using BlockPlanner.Commands;
 using BlockPlanner.Models;
+using BlockPlanner.Services;
 using BlockPlanner.Stores;
 
 namespace BlockPlanner.ViewModels
@@ -18,11 +19,11 @@ namespace BlockPlanner.ViewModels
         public ICommand AddNewPlanCommand { get; }
         public ICommand ShowPlanDetailsCommand { get; }
 
-        public MainMenuViewModel(NavigationStore navigationStore, Func<PlanDetailsViewModel> createPlanDetailsViewModel, Func<PlanSettingsViewModel> createPlanSettingsViewModel)
+        public MainMenuViewModel(NavigationService createPlanSettingsNavigationService, NavigationService createPlanDetailsNavigationService)
         {
             _plans = new ObservableCollection<PlanViewModel>();
-            AddNewPlanCommand = new NavigateCommand(navigationStore, createPlanSettingsViewModel);
-            ShowPlanDetailsCommand = new NavigateCommand(navigationStore, createPlanDetailsViewModel);
+            AddNewPlanCommand = new NavigateCommand(createPlanSettingsNavigationService);
+            ShowPlanDetailsCommand = new NavigateCommand(createPlanDetailsNavigationService);
 
 
             _plans.Add(new PlanViewModel(new Plan("Plan numer 1", DateTime.MinValue, DateTime.MaxValue, null)));

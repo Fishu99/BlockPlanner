@@ -6,13 +6,13 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using BlockPlanner.Commands;
+using BlockPlanner.Services;
 using BlockPlanner.Stores;
 
 namespace BlockPlanner.ViewModels
 {
     public class PlanDetailsViewModel : ViewModelBase
     {
-        private readonly NavigationStore _navigationStore;
         public string PlanName { get; set; }
         public string WeekStartTime { get; set; }
         public string WeekEndTime { get; set; }
@@ -21,11 +21,10 @@ namespace BlockPlanner.ViewModels
         public ICommand BackToMainMenuCommand { get; }
         public ICommand ModifyPlanSettingsCommand { get; }
 
-        public PlanDetailsViewModel(NavigationStore navigationStore, Func<MainMenuViewModel> createMainMenuViewModel, Func<PlanSettingsViewModel> createPlanSettingsViewModel)
+        public PlanDetailsViewModel(NavigationService createMainMenuNavigationService, NavigationService createPlanSettingsNavigationService)
         {
-            _navigationStore = navigationStore;
-            BackToMainMenuCommand = new NavigateCommand(navigationStore, createMainMenuViewModel);
-            ModifyPlanSettingsCommand = new NavigateCommand(navigationStore, createPlanSettingsViewModel);
+            BackToMainMenuCommand = new NavigateCommand(createMainMenuNavigationService);
+            ModifyPlanSettingsCommand = new NavigateCommand(createPlanSettingsNavigationService);
 
         }
 
