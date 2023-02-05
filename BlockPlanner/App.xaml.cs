@@ -25,6 +25,7 @@ namespace BlockPlanner
         public App()
         {
             _scheduler = new Scheduler();
+            _scheduler.Plans.Add(MainViewModel.SimulationInvoke());
             _navigationStore = new NavigationStore();
         }
 
@@ -51,19 +52,19 @@ namespace BlockPlanner
 
         private MainMenuViewModel CreateMainMenuViewModel()
         {
-            return new MainMenuViewModel(new NavigationService(_navigationStore, CreateAddPlanSettingsViewModel), new NavigationService(_navigationStore, CreatePlanDetailsViewModel));
+            return new MainMenuViewModel(_scheduler, new NavigationService(_navigationStore, CreateAddPlanSettingsViewModel), new NavigationService(_navigationStore, CreatePlanDetailsViewModel));
         }
 
         private PlanSettingsViewModel CreateAddPlanSettingsViewModel()
         {
-            var testPlan = MainViewModel.SimulationInvoke();
-            return new PlanSettingsViewModel(testPlan, PlanCreatorMode.Add, new NavigationService(_navigationStore, CreateMainMenuViewModel), new NavigationService(_navigationStore, CreatePlanDetailsViewModel));
+            // var testPlan = _scheduler.Plans.Count==0 ? MainViewModel.SimulationInvoke() : _scheduler.Plans[0]; //TODO delete
+            return new PlanSettingsViewModel(_scheduler.Plans, null, PlanCreatorMode.Add, new NavigationService(_navigationStore, CreateMainMenuViewModel), new NavigationService(_navigationStore, CreatePlanDetailsViewModel));
         }
 
         private PlanSettingsViewModel CreateModifyPlanSettingsViewModel()
         {
-            var testPlan = MainViewModel.SimulationInvoke();
-            return new PlanSettingsViewModel(testPlan, PlanCreatorMode.Modify, new NavigationService(_navigationStore, CreateMainMenuViewModel), new NavigationService(_navigationStore, CreatePlanDetailsViewModel));
+            var testPlan = _scheduler.Plans.Count == 0 ? MainViewModel.SimulationInvoke() : _scheduler.Plans[0];//TODO delete
+            return new PlanSettingsViewModel(_scheduler.Plans, testPlan, PlanCreatorMode.Modify, new NavigationService(_navigationStore, CreateMainMenuViewModel), new NavigationService(_navigationStore, CreatePlanDetailsViewModel));
         }
     }
 }

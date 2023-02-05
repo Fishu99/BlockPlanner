@@ -62,5 +62,22 @@ namespace BlockPlanner.Utilities
         {
             return (WeekDay)GetWeekDayId(date);
         }
+
+        public static DateTime ValidateTaskTimeStamp(string taskTime)
+        {
+            var timeValue = DateTime.Parse(taskTime);
+            return ValidateTaskTimeStamp(timeValue);
+        }
+
+        public static DateTime ValidateTaskTimeStamp(DateTime taskTime)
+        {
+            var minMod15 = taskTime.Minute % 15;
+            if (minMod15 != 0)
+            {
+                taskTime = taskTime.AddMinutes(minMod15 < 8 ? -minMod15 : 15 - minMod15);
+            }
+
+            return taskTime;
+        }
     }
 }

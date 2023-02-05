@@ -20,6 +20,7 @@ namespace BlockPlanner.ViewModels
 {
     public class PlanSettingsViewModel : ViewModelBase
     {
+        private List<Plan> _schedulerPlans;
         private Plan _plan;
         private string _planName;
         private PlanCreatorMode _mode;
@@ -47,6 +48,7 @@ namespace BlockPlanner.ViewModels
             get => _planName;
             set
             {
+                _plan.Name = value;
                 _planName = value;
                 OnPropertyChanged(nameof(PlanName));
             }
@@ -93,7 +95,7 @@ namespace BlockPlanner.ViewModels
             get => _selectedTask == null ? "" : _selectedTask.StartTime.ToString("t");
             set
             {
-                _selectedTask.StartTime = DateTime.Parse(value);
+                _selectedTask.StartTime = DateTimeUtilities.ValidateTaskTimeStamp(value);
                 OnPropertyChanged(nameof(StartTime));
             }
         }
@@ -103,7 +105,7 @@ namespace BlockPlanner.ViewModels
             get => _selectedTask == null ? "" : _selectedTask.EndTime.ToString("t");
             set
             {
-                _selectedTask.EndTime = DateTime.Parse(value);
+                _selectedTask.EndTime = DateTimeUtilities.ValidateTaskTimeStamp(value);
                 OnPropertyChanged(nameof(EndTime));
             }
         }
@@ -160,7 +162,8 @@ namespace BlockPlanner.ViewModels
             }
         }
 
-        public PlanSettingsViewModel(Plan plan,
+        public PlanSettingsViewModel(List<Plan> schedulerPlans, 
+            Plan plan,
             PlanCreatorMode mode,
             NavigationService createMainMenuNavigationService,
             NavigationService createPlanDetailsNavigationService)
@@ -169,18 +172,31 @@ namespace BlockPlanner.ViewModels
             if (plan == null)
             {
                 //TODO delete this
-                plan = new Plan();
+                _plan = new Plan();
+                PlanName = "<enterPlanName>";
+                var weekStartDate = DateTimeUtilities.GetWeekStart(DateTime.Now);
+                _plan.WeekStartTime = weekStartDate;
+                _plan.WeekEndTime = DateTimeUtilities.GetWeekEnd(DateTime.Now);
+                _selectedDate = weekStartDate;
+                _currentTasks = new ObservableCollection<TaskViewModel>();
+                _selectedTask = new TaskDetailsViewModel(TaskDetailsViewModel.GetDefaultTask());
+
                 Console.WriteLine("Plan was null in plan settings initialization");
             }
             //-----
-            _plan = plan;
-            _planName = plan.Name;
-            _currentTasks = new ObservableCollection<TaskViewModel>();
-            _selectedDate = plan.WeekStartTime;
+            else
+            {
+                _plan = plan;
+                _planName = plan.Name;
+                _currentTasks = new ObservableCollection<TaskViewModel>();
+                _selectedDate = plan.WeekStartTime;
+            }
+            
             _mode = mode;
+            _schedulerPlans = schedulerPlans;
 
             //For tests;
-            if (plan.ScheduledDays != null)
+            if (_plan.ScheduledDays != null && _mode != PlanCreatorMode.Add)
             {
                 var testTask = plan.ScheduledDays[WeekDay.Monday.GetId()].DayTasks[0];
                 var testTask2 = plan.ScheduledDays[WeekDay.Monday.GetId()].DayTasks[1];
@@ -255,5 +271,7 @@ namespace BlockPlanner.ViewModels
             _plan.WeekStartTime = DateTimeUtilities.GetWeekStart(_selectedDate);
             _plan.WeekEndTime = DateTimeUtilities.GetWeekEnd(_selectedDate);
         }
+
+        
     }
 }

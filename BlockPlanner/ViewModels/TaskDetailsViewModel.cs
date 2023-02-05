@@ -72,8 +72,9 @@ namespace BlockPlanner.ViewModels
             const int timeOffset = 12;
             var today = DateTime.Now;
             today = today.AddHours(-today.Hour + timeOffset);
+            today = DateTimeUtilities.ValidateTaskTimeStamp(today);
 
-            var task = new Task("NewTask", today, today, ColorUtilities.GetRandomColor(), "NewTask additional informations");
+            var task = new Task("NewTask", today, today.AddMinutes(15), ColorUtilities.GetRandomColor(), "NewTask additional informations");
             var taskDetailsViewModel = new TaskDetailsViewModel(task);
             return taskDetailsViewModel;
         }
