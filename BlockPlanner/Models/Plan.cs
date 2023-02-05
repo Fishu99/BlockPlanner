@@ -37,9 +37,18 @@ namespace BlockPlanner.Models
 
         public bool Conflicts(Plan newPlan)
         {
-            var newPlanWeekDay = newPlan.WeekStartTime.DayOfWeek;
-            if (WeekStartTime.DayOfWeek != newPlanWeekDay) return false;
-            return Name == newPlan.Name;
+            var newPlanStartDate = newPlan.WeekStartTime.Date;
+            var currentPlanStartDate = WeekStartTime.Date;
+            if (currentPlanStartDate == newPlanStartDate)
+            {
+                var newPlanName = newPlan.Name;
+                var currentPlanName = Name;
+                if (currentPlanName == newPlanName)
+                {
+                    return true;
+                }
+            }
+            return false;
         }
     }
 }

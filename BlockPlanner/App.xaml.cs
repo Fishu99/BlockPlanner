@@ -58,13 +58,13 @@ namespace BlockPlanner
         private PlanSettingsViewModel CreateAddPlanSettingsViewModel()
         {
             // var testPlan = _scheduler.Plans.Count==0 ? MainViewModel.SimulationInvoke() : _scheduler.Plans[0]; //TODO delete
-            return new PlanSettingsViewModel(_scheduler.Plans, null, PlanCreatorMode.Add, new NavigationService(_navigationStore, CreateMainMenuViewModel), new NavigationService(_navigationStore, CreatePlanDetailsViewModel));
+            return new PlanSettingsViewModel(_scheduler, null, PlanCreatorMode.Add, new NavigationService(_navigationStore, CreateMainMenuViewModel), new NavigationService(_navigationStore, CreatePlanDetailsViewModel));
         }
 
         private PlanSettingsViewModel CreateModifyPlanSettingsViewModel()
         {
             var testPlan = _scheduler.Plans.Count == 0 ? MainViewModel.SimulationInvoke() : _scheduler.Plans[0];//TODO delete
-            return new PlanSettingsViewModel(_scheduler.Plans, testPlan, PlanCreatorMode.Modify, new NavigationService(_navigationStore, CreateMainMenuViewModel), new NavigationService(_navigationStore, CreatePlanDetailsViewModel));
+            return new PlanSettingsViewModel(_scheduler, testPlan, PlanCreatorMode.Modify, new NavigationService(_navigationStore, CreateMainMenuViewModel), new NavigationService(_navigationStore, CreatePlanDetailsViewModel));
         }
     }
 }

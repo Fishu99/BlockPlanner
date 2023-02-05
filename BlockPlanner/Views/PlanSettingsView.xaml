@@ -466,7 +466,7 @@
                 Width="250"
                 Margin="0,0,10,0"
                 Background="Yellow"
-                Command="{Binding BackToPreviousViewCommand}"
+                Command="{Binding SaveAndExitCommand}"
                 Content="Save and Exit"
                 Style="{StaticResource PlanSettingsActionButtons}" />
         </Grid>

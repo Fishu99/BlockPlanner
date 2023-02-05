@@ -25,7 +25,7 @@ namespace BlockPlanner.Models
                 foreach (var exisitingPlan in _plans.Where(exisitingPlan => exisitingPlan.Conflicts(newPlan)))
                 {
                     throw new SchedulePlanAlreadyExistsException(
-                        "Plan with " + newPlan.Name + " name already exists in this week.",
+                        "There is a plan in scheduler that has the same date and name like current one.",
                         exisitingPlan, 
                         newPlan);
                 }

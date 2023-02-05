@@ -20,7 +20,7 @@ namespace BlockPlanner.ViewModels
 {
     public class PlanSettingsViewModel : ViewModelBase
     {
-        private List<Plan> _schedulerPlans;
+        private Scheduler _scheduler;
         private Plan _plan;
         private string _planName;
         private PlanCreatorMode _mode;
@@ -35,9 +35,11 @@ namespace BlockPlanner.ViewModels
         public ICommand SelectColorCommand { get; }
         public ICommand DeleteTaskCommand { get; }
         public ICommand RandomizeColorCommand { get; }
+        public ICommand SaveAndExitCommand { get; }
         public ICommand BackToPreviousViewCommand { get; }
 
         public Plan Plan  => _plan;
+        public Scheduler Scheduler => _scheduler;
 
         public string PlanCreatorTitle => _mode == PlanCreatorMode.Add ? 
             "Plan creator (adding new plan)" :
@@ -162,7 +164,7 @@ namespace BlockPlanner.ViewModels
             }
         }
 
-        public PlanSettingsViewModel(List<Plan> schedulerPlans, 
+        public PlanSettingsViewModel(Scheduler scheduler, 
             Plan plan,
             PlanCreatorMode mode,
             NavigationService createMainMenuNavigationService,
@@ -193,7 +195,7 @@ namespace BlockPlanner.ViewModels
             }
             
             _mode = mode;
-            _schedulerPlans = schedulerPlans;
+            _scheduler = scheduler;
 
             //For tests;
             if (_plan.ScheduledDays != null && _mode != PlanCreatorMode.Add)
@@ -223,6 +225,7 @@ namespace BlockPlanner.ViewModels
             ModifyTaskCommand = new ModifyTaskCommand(this);
             DeleteTaskCommand = new DeleteTaskCommand(this);
             RandomizeColorCommand = new RandomizeColorCommand(this);
+            SaveAndExitCommand = new SaveAndExitCommand(this);
             BackToPreviousViewCommand = _mode == PlanCreatorMode.Add ? 
                 new NavigateCommand(createMainMenuNavigationService) : 
                 new NavigateCommand(createPlanDetailsNavigationService);
