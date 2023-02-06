@@ -167,8 +167,9 @@ namespace BlockPlanner.ViewModels
         public PlanSettingsViewModel(Scheduler scheduler, 
             Plan plan,
             PlanCreatorMode mode,
+            int planId,
             NavigationService createMainMenuNavigationService,
-            NavigationService createPlanDetailsNavigationService)
+            ParameterNavigationService<int> createPlanDetailsNavigationService)
         {
             //For tests;
             if (plan == null)
@@ -226,9 +227,10 @@ namespace BlockPlanner.ViewModels
             DeleteTaskCommand = new DeleteTaskCommand(this);
             RandomizeColorCommand = new RandomizeColorCommand(this);
             SaveAndExitCommand = new SaveAndExitCommand(this);
-            BackToPreviousViewCommand = _mode == PlanCreatorMode.Add ? 
-                new NavigateCommand(createMainMenuNavigationService) : 
-                new NavigateCommand(createPlanDetailsNavigationService);
+            // BackToPreviousViewCommand = _mode == PlanCreatorMode.Add ? 
+            //     new NavigateCommand(createMainMenuNavigationService) : 
+            //     new ParameterNavigationCommand<int>(createPlanDetailsNavigationService);
+            BackToPreviousViewCommand = new NavigateCommand(createMainMenuNavigationService);
 
         }
 

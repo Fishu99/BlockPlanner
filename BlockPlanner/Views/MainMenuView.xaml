@@ -120,6 +120,7 @@
                             <DataTemplate>
                                 <Button
                                     Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type UserControl}}, Path=DataContext.ShowPlanDetailsCommand}"
+                                    CommandParameter="{Binding PlanId}"
                                     Content="Details"
                                     Style="{StaticResource DetailsButtonCell}" />
                             </DataTemplate>

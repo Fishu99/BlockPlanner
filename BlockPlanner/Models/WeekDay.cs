@@ -83,5 +83,10 @@ namespace BlockPlanner.Models
         {
             return Enum.GetNames(typeof(WeekDay)).Length;
         }
+
+        public static int GetWeekDayIdFromDateTime(DateTime date)
+        {
+            return date.DayOfWeek == DayOfWeek.Sunday ? GetElementsCount() : (int)date.DayOfWeek;
+        }
     }
 }

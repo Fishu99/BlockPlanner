@@ -45,13 +45,13 @@ namespace BlockPlanner.ViewModels
             simulationPlan.WeekEndTime = DateTimeUtilities.GetWeekEnd(DateTime.Now);
             var testDayPlan = simulationPlan.ScheduledDays[WeekDay.Monday.GetId()];
 
-            var today = DateTime.Now;
+            var weekStart = simulationPlan.WeekStartTime;
             var timeOffset = 10;
-            today = today.AddHours(-today.Hour + timeOffset);
+            weekStart = weekStart.AddHours(-weekStart.Hour + timeOffset);
 
-            var testTask = new Task(".NET", today, today.AddHours(1), (Color)ColorConverter.ConvertFromString("#86c676"), "AdditionalInfo");
-            var testTask2 = new Task("OR", today.AddHours(2), today.AddHours(3), (Color)ColorConverter.ConvertFromString("#e5182b"), "AdditionalInfo");
-            var testTask3 = new Task("SOC", today.AddHours(5), today.AddHours(6), (Color)ColorConverter.ConvertFromString("#8800e6"), "AdditionalInfo");
+            var testTask = new Task(".NET", weekStart, weekStart.AddHours(1), (Color)ColorConverter.ConvertFromString("#86c676"), "AdditionalInfo");
+            var testTask2 = new Task("OR", weekStart.AddHours(2), weekStart.AddHours(3), (Color)ColorConverter.ConvertFromString("#e5182b"), "AdditionalInfo");
+            var testTask3 = new Task("SOC", weekStart.AddHours(5), weekStart.AddHours(6), (Color)ColorConverter.ConvertFromString("#8800e6"), "AdditionalInfo");
             testDayPlan.DayTasks.Add(testTask);
             testDayPlan.DayTasks.Add(testTask2);
             testDayPlan.DayTasks.Add(testTask3);

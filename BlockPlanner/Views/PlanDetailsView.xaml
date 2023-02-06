@@ -41,10 +41,14 @@
             FontSize="44"
             Text="Details of selected plan" />
         <Grid
+            x:Name="PlanDataGrid"
             Grid.Row="1"
             Grid.Column="0"
             Grid.ColumnSpan="2"
-            Margin="10,10,10,0">
+            Margin="10,10,10,0"
+            DataContext="{Binding WeekPlanData}">
+
+            <!--#region GridDefinition-->
             <Grid.RowDefinitions>
                 <RowDefinition Height="4*" />
 
@@ -833,35 +837,67 @@
                 Grid.Column="0"
                 Style="{StaticResource PlanTimeLabelCell}"
                 Text="20:00 - 21:00" />
-
+            <!--#endregion-->
 
             <!--  Data  -->
-            <Border
-                Grid.Row="3"
-                Grid.RowSpan="5"
-                Grid.Column="1"
-                Margin="10,0,10,0"
-                Background="Black"
-                CornerRadius="10">
-                <TextBlock
-                    VerticalAlignment="Center"
-                    FontSize="40"
-                    Text="OR"
-                    TextAlignment="Center" />
-            </Border>
-            <Border
-                Grid.Row="3"
-                Grid.RowSpan="5"
-                Grid.Column="1"
-                Margin="15,2,15,2"
-                Background="DarkSeaGreen"
-                CornerRadius="10">
-                <TextBlock
-                    VerticalAlignment="Center"
-                    FontSize="40"
-                    Text="OR"
-                    TextAlignment="Center" />
-            </Border>
+
+
+
+
+
+            <!--  <Border  -->
+            <!--  Grid.Row="3"  -->
+            <!--  Grid.RowSpan="5"  -->
+            <!--  Grid.Column="1"  -->
+            <!--  Margin="10,0,10,0"  -->
+            <!--  Background="Black"  -->
+            <!--  CornerRadius="10">  -->
+            <!--  <TextBlock  -->
+            <!--  VerticalAlignment="Center"  -->
+            <!--  FontSize="40"  -->
+            <!--  Text="OR"  -->
+            <!--  TextAlignment="Center" />  -->
+            <!-- </Border> -->
+            <!--  <Border  -->
+            <!--  Grid.Row="3"  -->
+            <!--  Grid.RowSpan="5"  -->
+            <!--  Grid.Column="1"  -->
+            <!--  Margin="15,2,15,2"  -->
+            <!--  Background="DarkSeaGreen"  -->
+            <!--  CornerRadius="10">  -->
+            <!--  <TextBlock  -->
+            <!--  VerticalAlignment="Center"  -->
+            <!--  FontSize="40"  -->
+            <!--  Text="OR"  -->
+            <!--  TextAlignment="Center" />  -->
+            <!-- </Border> -->
+
+
+
+
+
+            <!--  <ItemsControl  -->
+            <!--  ItemsSource="{Binding WeekPlanData}">  -->
+            <!--  <ItemsControl  -->
+            <!--  ItemsSource="{Binding MondayDayPlan}">  -->
+            <!--         <DataTemplate> -->
+            <!--  <Border  -->
+            <!--  Grid.Row="{Binding Row}"  -->
+            <!--  Grid.Column="{Binding Col}"  -->
+            <!--  Grid.RowSpan="{Binding RowSpan}"  -->
+            <!--  Margin="10,0,10,0"  -->
+            <!--  Background="Black"  -->
+            <!--  CornerRadius="15">  -->
+            <!--  <TextBlock  -->
+            <!--  VerticalAlignment="Center"  -->
+            <!--  FontSize="40"  -->
+            <!--  Text="{Binding Name}"  -->
+            <!--                     TextAlignment="Center"></TextBlock> -->
+            <!--             </Border> -->
+            <!--         </DataTemplate> -->
+            <!--    -->
+            <!--     </ItemsControl> -->
+            <!-- </ItemsControl> -->
 
         </Grid>
 
@@ -883,7 +919,7 @@
                 HorizontalAlignment="Center"
                 VerticalAlignment="Bottom"
                 FontSize="34"
-                Text="PlanName" />
+                Text="{Binding PlanName}" />
 
             <TextBlock
                 Grid.Row="1"
@@ -892,7 +928,7 @@
                 HorizontalAlignment="Right"
                 VerticalAlignment="Center"
                 FontSize="24"
-                Text="StartDate" />
+                Text="{Binding WeekStartTime}" />
 
             <TextBlock
                 Grid.Row="1"
@@ -910,7 +946,7 @@
                 HorizontalAlignment="Left"
                 VerticalAlignment="Center"
                 FontSize="24"
-                Text="EndDate" />
+                Text="{Binding WeekEndTime}" />
 
             <TextBlock
                 Grid.Row="0"
@@ -920,7 +956,7 @@
                 VerticalAlignment="Top"
                 FontSize="18"
                 Foreground="Gray"
-                Text="#PlanId" />
+                Text="{Binding PlanId, StringFormat=PlanId: #{0}}" />
         </Grid>
 
         <StackPanel
@@ -940,6 +976,7 @@
 
             <Button
                 Command="{Binding ModifyPlanSettingsCommand}"
+                CommandParameter="{Binding PlanId}"
                 Content="Modify"
                 Style="{StaticResource PlanDetailsActionButtons}" />
 

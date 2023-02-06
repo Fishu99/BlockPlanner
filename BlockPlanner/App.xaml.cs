@@ -45,26 +45,30 @@ namespace BlockPlanner
             base.OnStartup(e);
         }
 
-        private PlanDetailsViewModel CreatePlanDetailsViewModel()
+        private PlanDetailsViewModel CreatePlanDetailsViewModel(int i)
         {
-            return new PlanDetailsViewModel(new NavigationService(_navigationStore, CreateMainMenuViewModel), new NavigationService(_navigationStore, CreateModifyPlanSettingsViewModel));
+            return new PlanDetailsViewModel(_scheduler,
+                i,
+                new NavigationService(_navigationStore, CreateMainMenuViewModel),
+                new ParameterNavigationService<int>(_navigationStore,
+                    CreateModifyPlanSettingsViewModel));
         }
 
         private MainMenuViewModel CreateMainMenuViewModel()
         {
-            return new MainMenuViewModel(_scheduler, new NavigationService(_navigationStore, CreateAddPlanSettingsViewModel), new NavigationService(_navigationStore, CreatePlanDetailsViewModel));
+            return new MainMenuViewModel(_scheduler, new NavigationService(_navigationStore, CreateAddPlanSettingsViewModel), new ParameterNavigationService<int>(_navigationStore, CreatePlanDetailsViewModel));
         }
 
         private PlanSettingsViewModel CreateAddPlanSettingsViewModel()
         {
             // var testPlan = _scheduler.Plans.Count==0 ? MainViewModel.SimulationInvoke() : _scheduler.Plans[0]; //TODO delete
-            return new PlanSettingsViewModel(_scheduler, null, PlanCreatorMode.Add, new NavigationService(_navigationStore, CreateMainMenuViewModel), new NavigationService(_navigationStore, CreatePlanDetailsViewModel));
+            return new PlanSettingsViewModel(_scheduler, null, PlanCreatorMode.Add, 0, new NavigationService(_navigationStore, CreateMainMenuViewModel), new ParameterNavigationService<int>(_navigationStore, CreatePlanDetailsViewModel));
         }
 
-        private PlanSettingsViewModel CreateModifyPlanSettingsViewModel()
+        private PlanSettingsViewModel CreateModifyPlanSettingsViewModel(int i)
         {
             var testPlan = _scheduler.Plans.Count == 0 ? MainViewModel.SimulationInvoke() : _scheduler.Plans[0];//TODO delete
-            return new PlanSettingsViewModel(_scheduler, testPlan, PlanCreatorMode.Modify, new NavigationService(_navigationStore, CreateMainMenuViewModel), new NavigationService(_navigationStore, CreatePlanDetailsViewModel));
+            return new PlanSettingsViewModel(_scheduler, testPlan, PlanCreatorMode.Modify, i, new NavigationService(_navigationStore, CreateMainMenuViewModel), new ParameterNavigationService<int>(_navigationStore, CreatePlanDetailsViewModel));
         }
     }
 }

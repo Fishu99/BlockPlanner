@@ -11,7 +11,7 @@ namespace BlockPlanner.ViewModels
     public class PlanViewModel : ViewModelBase
     {
         private readonly Plan _plan;
-        public string PlanId => "10";
+        public string PlanId { get; set; }
         public string PlanName => _plan.Name;
         public string WeekStartTime => _plan.WeekStartTime.ToString("d");
         public string WeekEndTime => _plan.WeekEndTime.ToString("d");
@@ -19,6 +19,12 @@ namespace BlockPlanner.ViewModels
         public PlanViewModel(Plan plan)
         {
             _plan = plan;
+            PlanId = 0.ToString();
+        }
+        public PlanViewModel(Plan plan, int planId)
+        {
+            _plan = plan;
+            PlanId = planId.ToString();
         }
     }
 }

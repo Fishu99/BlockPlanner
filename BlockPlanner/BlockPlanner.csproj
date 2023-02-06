@@ -63,6 +63,7 @@
     <Compile Include="Commands\DeleteTaskCommand.cs" />
     <Compile Include="Commands\ModifyTaskCommand.cs" />
     <Compile Include="Commands\NavigateCommand.cs" />
+    <Compile Include="Commands\ParameterNavigationCommand.cs" />
     <Compile Include="Commands\RandomizeColorCommand.cs" />
     <Compile Include="Commands\SaveAndExitCommand.cs" />
     <Compile Include="Commands\SelectColorCommand.cs" />
@@ -72,10 +73,13 @@
     <Compile Include="Exceptions\TaskCollisionException.cs" />
     <Compile Include="Exceptions\UnrecognizedWeekDayException.cs" />
     <Compile Include="Models\PlanCreatorMode.cs" />
+    <Compile Include="Models\SchedulerSettings.cs" />
     <Compile Include="Services\NavigationService.cs" />
+    <Compile Include="Services\ParameterNavigationService.cs" />
     <Compile Include="Stores\NavigationStore.cs" />
     <Compile Include="Utilities\ColorUtilities.cs" />
     <Compile Include="Utilities\DateTimeUtilities.cs" />
+    <Compile Include="Utilities\TaskUtilities.cs" />
     <Compile Include="ViewModels\DayPlanViewModel.cs" />
     <Compile Include="ViewModels\MainMenuViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
@@ -83,8 +87,10 @@
     <Compile Include="ViewModels\PlanSettingsViewModel.cs" />
     <Compile Include="ViewModels\PlanViewModel.cs" />
     <Compile Include="ViewModels\TaskDetailsViewModel.cs" />
+    <Compile Include="ViewModels\TaskItemViewModel.cs" />
     <Compile Include="ViewModels\TaskViewModel.cs" />
     <Compile Include="ViewModels\ViewModelBase.cs" />
+    <Compile Include="ViewModels\WeekPlanViewModel.cs" />
     <Compile Include="Views\MainMenuView.xaml.cs">
       <DependentUpon>MainMenuView.xaml</DependentUpon>
     </Compile>
