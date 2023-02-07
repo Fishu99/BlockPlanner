@@ -6,6 +6,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Media;
@@ -14,6 +15,7 @@ using BlockPlanner.Models;
 using BlockPlanner.Services;
 using BlockPlanner.Stores;
 using BlockPlanner.Utilities;
+using MessageBox = System.Windows.MessageBox;
 using Task = BlockPlanner.Models.Task;
 
 namespace BlockPlanner.ViewModels
@@ -22,6 +24,7 @@ namespace BlockPlanner.ViewModels
     {
         private Scheduler _scheduler;
         private Plan _plan;
+        private int _planId;
         private string _planName;
         private PlanCreatorMode _mode;
         private DateTime _selectedDate;
@@ -36,9 +39,11 @@ namespace BlockPlanner.ViewModels
         public ICommand DeleteTaskCommand { get; }
         public ICommand RandomizeColorCommand { get; }
         public ICommand SaveAndExitCommand { get; }
-        public ICommand BackToPreviousViewCommand { get; }
+        public ICommand BackToMainMenuCommand { get; }
+        public ICommand BackToPlanDetailsCommand { get; }
 
         public Plan Plan  => _plan;
+        public int PlanId => _planId;
         public Scheduler Scheduler => _scheduler;
 
         public string PlanCreatorTitle => _mode == PlanCreatorMode.Add ? 
@@ -97,8 +102,16 @@ namespace BlockPlanner.ViewModels
             get => _selectedTask == null ? "" : _selectedTask.StartTime.ToString("t");
             set
             {
-                _selectedTask.StartTime = DateTimeUtilities.ValidateTaskTimeStamp(value);
-                OnPropertyChanged(nameof(StartTime));
+                try
+                {
+                    _selectedTask.StartTime = DateTimeUtilities.ValidateTaskTimeStamp(value);
+                    OnPropertyChanged(nameof(StartTime));
+                }
+                catch (Exception)
+                {
+                    MessageBox.Show("Invalid StartTime format.", "Error",
+                        MessageBoxButton.OK, MessageBoxImage.Error);
+                }
             }
         }
 
@@ -107,8 +120,16 @@ namespace BlockPlanner.ViewModels
             get => _selectedTask == null ? "" : _selectedTask.EndTime.ToString("t");
             set
             {
-                _selectedTask.EndTime = DateTimeUtilities.ValidateTaskTimeStamp(value);
-                OnPropertyChanged(nameof(EndTime));
+                try
+                {
+                    _selectedTask.EndTime = DateTimeUtilities.ValidateTaskTimeStamp(value);
+                    OnPropertyChanged(nameof(EndTime));
+                }
+                catch (Exception)
+                {
+                    MessageBox.Show("Invalid StartTime format.", "Error",
+                        MessageBoxButton.OK, MessageBoxImage.Error);
+                }
             }
         }
 
@@ -164,6 +185,8 @@ namespace BlockPlanner.ViewModels
             }
         }
 
+        public int Mode => (int)_mode;
+
         public PlanSettingsViewModel(Scheduler scheduler, 
             Plan plan,
             PlanCreatorMode mode,
@@ -171,49 +194,44 @@ namespace BlockPlanner.ViewModels
             NavigationService createMainMenuNavigationService,
             ParameterNavigationService<int> createPlanDetailsNavigationService)
         {
-            //For tests;
-            if (plan == null)
+            if (mode == PlanCreatorMode.Add)
             {
-                //TODO delete this
                 _plan = new Plan();
-                PlanName = "<enterPlanName>";
+                _planName = "<enterPlanName>";
                 var weekStartDate = DateTimeUtilities.GetWeekStart(DateTime.Now);
                 _plan.WeekStartTime = weekStartDate;
                 _plan.WeekEndTime = DateTimeUtilities.GetWeekEnd(DateTime.Now);
                 _selectedDate = weekStartDate;
+                _currentSelectedDay = WeekDay.Monday;
                 _currentTasks = new ObservableCollection<TaskViewModel>();
-                _selectedTask = new TaskDetailsViewModel(TaskDetailsViewModel.GetDefaultTask());
-
-                Console.WriteLine("Plan was null in plan settings initialization");
+                _selectedTask = new TaskDetailsViewModel(TaskDetailsViewModel.GetDefaultTask(weekStartDate));
+                _mode = mode;
+                _scheduler = scheduler;
             }
-            //-----
-            else
+            else if (mode == PlanCreatorMode.Modify)
             {
-                _plan = plan;
-                _planName = plan.Name;
+                _scheduler = scheduler;
+                _plan = scheduler.Plans[planId-1];
+                _planId = planId;
+                _planName = _plan.Name;
+                _mode = mode;
+                _selectedDate = _plan.WeekStartTime;
                 _currentTasks = new ObservableCollection<TaskViewModel>();
-                _selectedDate = plan.WeekStartTime;
-            }
-            
-            _mode = mode;
-            _scheduler = scheduler;
+                _currentSelectedDay = WeekDay.Monday;
+                foreach (var task in _plan.ScheduledDays[_currentSelectedDay.GetId()].DayTasks)
+                {
+                    _currentTasks.Add(new TaskDetailsViewModel(task));
+                }
 
-            //For tests;
-            if (_plan.ScheduledDays != null && _mode != PlanCreatorMode.Add)
-            {
-                var testTask = plan.ScheduledDays[WeekDay.Monday.GetId()].DayTasks[0];
-                var testTask2 = plan.ScheduledDays[WeekDay.Monday.GetId()].DayTasks[1];
-                var testTask3= plan.ScheduledDays[WeekDay.Monday.GetId()].DayTasks[2];
-                var taskDetailsViewModelTest = new TaskDetailsViewModel(testTask, 1);
-                var taskDetailsViewModelTest2 = new TaskDetailsViewModel(testTask2, 2);
-                var taskDetailsViewModelTest3 = new TaskDetailsViewModel(testTask3, 3);
-                _currentTasks.Add(taskDetailsViewModelTest);
-                _currentTasks.Add(taskDetailsViewModelTest2);
-                _currentTasks.Add(taskDetailsViewModelTest3);
-                _selectedTask = new TaskDetailsViewModel(taskDetailsViewModelTest2);
-                UpdateOrderId();
+                if (_currentTasks.Count == 0)
+                {
+                    _selectedTask = TaskDetailsViewModel.GetDefaultTask(_selectedDate);
+                }
+                else
+                {
+                    _selectedTask = (TaskDetailsViewModel)_currentTasks[0];
+                }
             }
-            //-----
 
             foreach (var task in _currentTasks)
             {
@@ -227,11 +245,8 @@ namespace BlockPlanner.ViewModels
             DeleteTaskCommand = new DeleteTaskCommand(this);
             RandomizeColorCommand = new RandomizeColorCommand(this);
             SaveAndExitCommand = new SaveAndExitCommand(this);
-            // BackToPreviousViewCommand = _mode == PlanCreatorMode.Add ? 
-            //     new NavigateCommand(createMainMenuNavigationService) : 
-            //     new ParameterNavigationCommand<int>(createPlanDetailsNavigationService);
-            BackToPreviousViewCommand = new NavigateCommand(createMainMenuNavigationService);
-
+            BackToMainMenuCommand = new NavigateCommand(createMainMenuNavigationService);
+            BackToPlanDetailsCommand = new ParameterNavigationCommand<int>(createPlanDetailsNavigationService);
         }
 
 
@@ -266,7 +281,11 @@ namespace BlockPlanner.ViewModels
 
         public void UpdateSelectedDay(DateTime newSelectedDay)
         {
+            var dayDiff = WeekDayMethods.GetWeekDayIdFromDateTime(newSelectedDay) -
+                          WeekDayMethods.GetWeekDayIdFromDateTime(_selectedDate);
             _selectedDate = newSelectedDay;
+            _selectedTask.StartTime = _selectedTask.StartTime.AddDays(dayDiff);
+            _selectedTask.EndTime = _selectedTask.EndTime.AddDays(dayDiff);
             UpdatePlanWeekDates();
             OnPropertyChanged(nameof(SelectedDate));
         }

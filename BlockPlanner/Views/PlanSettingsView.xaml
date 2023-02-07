@@ -14,6 +14,7 @@
     <UserControl.Resources>
         <ResourceDictionary>
             <converters:ButtonSelectionColorConverter x:Key="ButtonSelectionColorConverter" />
+            <converters:SaveAndExitModeConverter x:Key="SaveAndExitModeConverter" />
         </ResourceDictionary>
     </UserControl.Resources>
 
@@ -45,7 +46,7 @@
             Background="GreenYellow"
             Command="{Binding AddNewTaskCommand}"
             Content="Add new task"
-            Style="{StaticResource PlanSettingsActionButtons}" />
+            Style="{StaticResource PlanSettingsActionButtons}"/>
 
         <Grid Grid.Row="1" Grid.Column="0">
             <Grid.RowDefinitions>
@@ -299,7 +300,6 @@
 
         </Grid>
 
-        <!--  Hidden at beginning  -->
         <Grid
             Grid.Row="1"
             Grid.Column="1"
@@ -340,7 +340,10 @@
                 Grid.Row="1"
                 Grid.Column="1"
                 Style="{StaticResource PlanSettingsFieldLabelsBorder}">
-                <TextBox Style="{StaticResource PlanSettingsInputField}" Text="{Binding TaskName, UpdateSourceTrigger=PropertyChanged, TargetNullValue=''}" />
+                <TextBox
+                    MaxLength="8"
+                    Style="{StaticResource PlanSettingsInputField}"
+                    Text="{Binding TaskName, UpdateSourceTrigger=PropertyChanged, TargetNullValue=''}" />
             </Border>
 
             <!--  Start time  -->
@@ -388,13 +391,15 @@
                     <ColumnDefinition Width="2*" />
                 </Grid.ColumnDefinitions>
 
-                <TextBlock
+                <Border
                     Grid.Row="0"
                     Grid.Column="0"
                     Margin="10"
-                    HorizontalAlignment="Stretch"
-                    VerticalAlignment="Stretch"
-                    Background="{Binding Color}" />
+                    Background="{Binding Color}"
+                    BorderBrush="Gray"
+                    BorderThickness="1"
+                    ClipToBounds="False"
+                    CornerRadius="25" />
 
                 <Border
                     Grid.Row="0"
@@ -432,6 +437,7 @@
                 Grid.Column="1"
                 Style="{StaticResource PlanSettingsFieldLabelsBorder}">
                 <TextBox
+                    Padding="10"
                     VerticalContentAlignment="Top"
                     Style="{StaticResource PlanSettingsInputField}"
                     Text="{Binding AdditionalInfo, UpdateSourceTrigger=PropertyChanged}" />
@@ -440,34 +446,44 @@
             <StackPanel
                 Grid.Row="6"
                 Grid.Column="0"
-                Grid.ColumnSpan="2"
-                HorizontalAlignment="Left"
+                HorizontalAlignment="Center"
                 Orientation="Horizontal">
 
                 <Button
-                    Margin="10,0,0,0"
+                    Margin="10,0,10,0"
                     Background="OrangeRed"
                     Command="{Binding DeleteTaskCommand}"
                     Content="Delete"
-                    Style="{StaticResource PlanSettingsActionButtons}" />
+                    Style="{StaticResource PlanSettingsActionButtons}" 
+                    Width="140"/>
 
                 <Button
-                    Margin="20,0,0,0"
+                    Margin="10,0,10,0"
                     Background="LightSkyBlue"
                     Command="{Binding ModifyTaskCommand}"
                     Content="Modify"
-                    Style="{StaticResource PlanSettingsActionButtons}" />
+                    Style="{StaticResource PlanSettingsActionButtons}" 
+                    Width="140"/>
             </StackPanel>
 
             <Button
                 Grid.Row="6"
-                Grid.Column="0"
-                Grid.ColumnSpan="2"
-                Width="250"
-                Margin="0,0,10,0"
+                Grid.Column="1"
+                Margin="10,0,10,0"
                 Background="Yellow"
                 Command="{Binding SaveAndExitCommand}"
-                Content="Save and Exit"
+                Content="Save and go to MainMenu"
+                Visibility="{Binding Mode, Converter={StaticResource SaveAndExitModeConverter}, ConverterParameter='addButton'}"
+                Style="{StaticResource PlanSettingsActionButtons}" />
+            <Button
+                Grid.Row="6"
+                Grid.Column="1"
+                Margin="10,0,10,0"
+                Background="Yellow"
+                Command="{Binding SaveAndExitCommand}"
+                CommandParameter="{Binding PlanId}"
+                Content="Save and go to Details"
+                Visibility="{Binding Mode, Converter={StaticResource SaveAndExitModeConverter}, ConverterParameter='modifyButton'}"
                 Style="{StaticResource PlanSettingsActionButtons}" />
         </Grid>
     </Grid>

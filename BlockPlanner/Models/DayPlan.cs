@@ -25,6 +25,11 @@ namespace BlockPlanner.Models
 
         public void AddNewTask(Task task, out int placementId)
         {
+            if (task.StartTime.TimeOfDay == task.EndTime.TimeOfDay)
+            {
+                throw new TaskCollisionException();
+            }
+
             placementId = 0;
             if (_dayTasks != null)
             {
@@ -35,7 +40,7 @@ namespace BlockPlanner.Models
                         throw new TaskCollisionException();
                     }
 
-                    if (task.StartTime > existingTask.EndTime)
+                    if (task.StartTime >= existingTask.EndTime)
                     {
                         placementId++;
                     }

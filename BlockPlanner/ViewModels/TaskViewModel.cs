@@ -102,6 +102,7 @@ namespace BlockPlanner.ViewModels
             }
         }
 
+
         public TaskViewModel()
         {
             _task = new Task();

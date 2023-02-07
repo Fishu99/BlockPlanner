@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -15,6 +16,11 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using BlockPlanner.Models;
 using BlockPlanner.ViewModels;
+using Brush = System.Windows.Media.Brush;
+using Brushes = System.Windows.Media.Brushes;
+using Color = System.Windows.Media.Color;
+using ColorConverter = System.Windows.Media.ColorConverter;
+using Point = System.Windows.Point;
 
 namespace BlockPlanner.Views
 {
@@ -89,23 +95,87 @@ namespace BlockPlanner.Views
                 return;
             }
 
+
+
+            //Background of task
+            var colorString = task.Color;
+            var mediaBrushConverter = new BrushConverter();
+            var taskBrush = (Brush)mediaBrushConverter.ConvertFromString(colorString);
+            var mediaColor = (Color)ColorConverter.ConvertFromString(colorString);
+
+            var gradientBrush = new LinearGradientBrush();
+            gradientBrush.StartPoint = new Point(0, 0);
+            gradientBrush.EndPoint = new Point(1, 1);
+            var startColor = mediaColor;
+            var endColor = Color.FromRgb((byte)(mediaColor.R * 0.8), (byte)(mediaColor.G * 0.8), (byte)(mediaColor.B * 0.8));
+            gradientBrush.GradientStops.Add(new GradientStop(startColor, 0));
+            gradientBrush.GradientStops.Add(new GradientStop(endColor, 1));
+            taskBrush = gradientBrush;
+
+            var darkeningAmount = 100;
+            var r = (byte)Math.Max(0, mediaColor.R - darkeningAmount);
+            var g = (byte)Math.Max(0, mediaColor.G - darkeningAmount);
+            var b = (byte)Math.Max(0, mediaColor.B - darkeningAmount);
+            var darkerColor = Color.FromRgb(r, g, b);
+            var taskBorderColor = new SolidColorBrush(darkerColor);
+
+            //Text size of the task
+
+            int fontSize;
+            switch (task.RowSpan)
+            {
+                case 1: 
+                    fontSize = 10;
+                    break;
+                case 2: 
+                    fontSize = 20;
+                    break;
+                case 3:
+                    fontSize = 30;
+                    break;
+                default: 
+                    fontSize = 40;
+                    break;
+            }
+
+            var radialGradientBrush = new RadialGradientBrush
+            {
+                Center = new Point(0.5, 0.5),
+                RadiusX = 0.5,
+                RadiusY = 0.5
+            };
+            var gradientStop1 = new GradientStop
+            {
+                Color = Color.FromArgb(150, darkerColor.R, darkerColor.G, darkerColor.B),
+                Offset = 0
+            };
+            radialGradientBrush.GradientStops.Add(gradientStop1);
+            var gradientStop2 = new GradientStop
+            {
+                Color = Color.FromArgb(0, darkerColor.R, darkerColor.G, darkerColor.B),
+                Offset = 1
+            };
+            radialGradientBrush.GradientStops.Add(gradientStop2);
+
+
+            //Final elements
             var taskBackgroundBorder = new Border
             {
                 Margin = new Thickness(10, 0, 10, 0),
-                Background = Brushes.Black,
+                Background = taskBorderColor,
                 CornerRadius = new CornerRadius(10)
             };
             var taskTextForeground = new TextBlock
             {
                 VerticalAlignment = VerticalAlignment.Center,
-                FontSize = 40,
+                FontSize = fontSize,
                 Text = task.Name,
-                TextAlignment = TextAlignment.Center
+                Foreground = Brushes.WhiteSmoke,
+                Background = radialGradientBrush,
+                TextAlignment = TextAlignment.Center,
+                Margin = new Thickness(20, 0, 20, 0)
             };
 
-            var colorString = task.Color;
-            var brushConverter = new BrushConverter();
-            var taskBrush = (Brush)brushConverter.ConvertFromString(colorString);
             var taskMainForegroundBorder = new Border
             {
                 Margin = new Thickness(15, 2, 15, 2),
@@ -122,39 +192,6 @@ namespace BlockPlanner.Views
             Grid.SetRow(taskMainForegroundBorder, task.Row);
             Grid.SetColumn(taskMainForegroundBorder, task.Col);
             Grid.SetRowSpan(taskMainForegroundBorder, task.RowSpan);
-        }
-
-        private void AddTestBlock()
-        {
-            var testBorder = new Border
-            {
-                Margin = new Thickness(10, 0, 10, 0),
-                Background = Brushes.Black,
-                CornerRadius = new CornerRadius(10)
-            };
-            var testInsideTextBlock = new TextBlock
-            {
-                VerticalAlignment = VerticalAlignment.Center,
-                FontSize = 40,
-                Text = "OR",
-                TextAlignment = TextAlignment.Center
-            };
-            var testInsideBorder = new Border
-            {
-                Margin = new Thickness(15, 2, 15, 2),
-                Background = Brushes.DarkSeaGreen,
-                CornerRadius = new CornerRadius(10),
-                Child = testInsideTextBlock
-            };
-
-            PlanDataGrid.Children.Add(testBorder);
-            PlanDataGrid.Children.Add(testInsideBorder);
-            Grid.SetRow(testBorder, 10);
-            Grid.SetColumn(testBorder, 1);
-            Grid.SetRowSpan(testBorder, 5);
-            Grid.SetRow(testInsideBorder, 10);
-            Grid.SetColumn(testInsideBorder, 1);
-            Grid.SetRowSpan(testInsideBorder, 5);
         }
     }
 }

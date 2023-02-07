@@ -44,6 +44,7 @@ namespace BlockPlanner.Commands
         {
             _newTaskDetails = _planSettingsViewModel.SelectedTask;
             TaskViewModel.ValidateStartAndEndTime(_newTaskDetails);
+            ValidateWeekDay(_newTaskDetails);
             var task = new Task(_newTaskDetails.TaskName,
                 _newTaskDetails.StartTime,
                 _newTaskDetails.EndTime,
@@ -66,7 +67,16 @@ namespace BlockPlanner.Commands
             }
 
         }
-        
+
+        private void ValidateWeekDay(TaskDetailsViewModel newTaskDetails)
+        {
+            var selectedDate = _planSettingsViewModel.SelectedDate;
+            if (selectedDate.Date == newTaskDetails.StartTime.Date &&
+                selectedDate.Date == newTaskDetails.EndTime.Date) return;
+            newTaskDetails.StartTime = new DateTime(selectedDate.Year, selectedDate.Month, selectedDate.Day, newTaskDetails.StartTime.Hour, newTaskDetails.StartTime.Minute, 0);
+            newTaskDetails.EndTime = new DateTime(selectedDate.Year, selectedDate.Month, selectedDate.Day, newTaskDetails.EndTime.Hour, newTaskDetails.EndTime.Minute, 0);
+        }
+
 
         private void UpdateCurrentTasks(Task task, int placementId)
         {

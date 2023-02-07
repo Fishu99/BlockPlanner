@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 using System.Windows.Media;
 using BlockPlanner.Utilities;
 using Task = BlockPlanner.Models.Task;
@@ -31,8 +33,11 @@ namespace BlockPlanner.ViewModels
             AdditionalInfo = task.AdditionalInfo;
         }
 
-        public TaskDetailsViewModel(TaskDetailsViewModel taskDetailsViewModel) : base()
+        public TaskDetailsViewModel(TaskDetailsViewModel taskDetailsViewModel)
         {
+            _task = new Task(taskDetailsViewModel.TaskName, taskDetailsViewModel.StartTime,
+                taskDetailsViewModel.EndTime, taskDetailsViewModel.BlockColor, taskDetailsViewModel.AdditionalInfo);
+
             TaskName = taskDetailsViewModel.TaskName;
             StartTime = taskDetailsViewModel.StartTime;
             EndTime = taskDetailsViewModel.EndTime;
@@ -67,14 +72,13 @@ namespace BlockPlanner.ViewModels
             OnPropertyChanged(nameof(TaskName));
         }
 
-        public static TaskDetailsViewModel GetDefaultTask()
+        public static TaskDetailsViewModel GetDefaultTask(DateTime selectedDay)
         {
-            const int timeOffset = 12;
-            var today = DateTime.Now;
-            today = today.AddHours(-today.Hour + timeOffset);
-            today = DateTimeUtilities.ValidateTaskTimeStamp(today);
+            const int timeHourOffset = 12;
+            var taskTime = new DateTime(selectedDay.Year, selectedDay.Month, selectedDay.Day, timeHourOffset, selectedDay.Minute, 0);
+            taskTime = DateTimeUtilities.ValidateTaskTimeStamp(taskTime);
 
-            var task = new Task("NewTask", today, today.AddMinutes(15), ColorUtilities.GetRandomColor(), "NewTask additional informations");
+            var task = new Task("NewTask", taskTime, taskTime.AddMinutes(45), ColorUtilities.GetRandomColor(), "NewTask additional informations");
             var taskDetailsViewModel = new TaskDetailsViewModel(task);
             return taskDetailsViewModel;
         }

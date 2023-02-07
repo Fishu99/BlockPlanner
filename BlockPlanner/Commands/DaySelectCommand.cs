@@ -46,7 +46,6 @@ namespace BlockPlanner.Commands
                 if (newDayPlan == null)
                 {
                     dayPlansList[parameterWeekDayId] = new DayPlan(parameterWeekDay);
-                    // newDayPlan = dayPlansList[parameterWeekDayId];
                 }
                 _planSettingsViewModel.CurrentTasks = new ObservableCollection<TaskViewModel>();
 

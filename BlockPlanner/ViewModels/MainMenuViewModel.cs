@@ -17,10 +17,12 @@ namespace BlockPlanner.ViewModels
         private readonly Scheduler _scheduler;
 
         private readonly ObservableCollection<PlanViewModel> _plans;
-        public IEnumerable<PlanViewModel> Plans => _plans;
+        public ObservableCollection<PlanViewModel> Plans => _plans;
         public ICommand AddNewPlanCommand { get; }
         public ICommand ShowPlanDetailsCommand { get; }
         public ICommand DeletePlanCommand { get; }
+
+        public Scheduler Scheduler => _scheduler;
 
         public MainMenuViewModel(Scheduler scheduler, NavigationService createPlanSettingsNavigationService, ParameterNavigationService<int> createPlanDetailsNavigationService)
         {
@@ -28,13 +30,8 @@ namespace BlockPlanner.ViewModels
             _plans = new ObservableCollection<PlanViewModel>();
             AddNewPlanCommand = new NavigateCommand(createPlanSettingsNavigationService);
             ShowPlanDetailsCommand = new ParameterNavigationCommand<int>(createPlanDetailsNavigationService);
+            DeletePlanCommand = new DeletePlanCommand(this);
             ReadPlansFromScheduler();
-
-            //For tests
-            // _plans.Add(new PlanViewModel(new Plan("Plan numer 1", DateTime.MinValue, DateTime.MaxValue, null)));
-            // _plans.Add(new PlanViewModel(new Plan("Plan numer 2", DateTime.MinValue, DateTime.MaxValue, null)));
-            // _plans.Add(new PlanViewModel(new Plan("Plan numer 3", DateTime.MinValue, DateTime.MaxValue, null)));
-            // _plans.Add(new PlanViewModel(new Plan("Plan numer 4", DateTime.MinValue, DateTime.MaxValue, null)));
         }
 
         private void ReadPlansFromScheduler()

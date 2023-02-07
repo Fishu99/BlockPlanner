@@ -35,6 +35,7 @@ namespace BlockPlanner.Commands
 
 
             TaskViewModel.ValidateStartAndEndTime(_selectedTask);
+            ValidateTaskDateTime(_selectedTask);
             var task = new Task(_selectedTask.TaskName,
                 _selectedTask.StartTime,
                 _selectedTask.EndTime,
@@ -43,8 +44,8 @@ namespace BlockPlanner.Commands
             var taskToModifyId = int.Parse(_selectedTask.Order) - 1;
 
             List<Task> dayTasks = _planSettingsViewModel.CurrentDayPlan.DayTasks;
-            Task taskToModify = dayTasks[taskToModifyId];
-            TaskDetailsViewModel taskToModifyFromView = (TaskDetailsViewModel)_planSettingsViewModel.CurrentTasks[taskToModifyId];
+            var taskToModify = dayTasks[taskToModifyId];
+            var taskToModifyFromView = (TaskDetailsViewModel)_planSettingsViewModel.CurrentTasks[taskToModifyId];
             try
             {
                 bool isChanged = taskToModify.UpdateTaskInformation(task, dayTasks, out int placementId);
@@ -71,6 +72,18 @@ namespace BlockPlanner.Commands
             {
                 MessageBox.Show("Modified task time interval conflicts with one of the existing tasks", "Error",
                     MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        private void ValidateTaskDateTime(TaskDetailsViewModel task)
+        {
+            WeekDay currentWeekPlanDay = _planSettingsViewModel.CurrentDayPlan.Day;
+            if (WeekDayMethods.GetWeekDayIdFromDateTime(task.StartTime) != currentWeekPlanDay.GetId() ||
+                WeekDayMethods.GetWeekDayIdFromDateTime(task.EndTime) != currentWeekPlanDay.GetId())
+            {
+                var day = _planSettingsViewModel.SelectedDate.Day;
+                task.StartTime = new DateTime(task.StartTime.Year, task.StartTime.Month, day, task.StartTime.Hour, task.StartTime.Minute, 0);
+                task.EndTime = new DateTime(task.EndTime.Year, task.EndTime.Month, day, task.EndTime.Hour, task.EndTime.Minute, 0);
             }
         }
 

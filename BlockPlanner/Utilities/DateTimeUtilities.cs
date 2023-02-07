@@ -71,13 +71,40 @@ namespace BlockPlanner.Utilities
 
         public static DateTime ValidateTaskTimeStamp(DateTime taskTime)
         {
-            var minMod15 = taskTime.Minute % 15;
+            if (taskTime.Hour < SchedulerSettings.StartTimeHour)
+            {
+                taskTime = taskTime.AddHours(-taskTime.Hour + SchedulerSettings.StartTimeHour);
+                taskTime = taskTime.AddMinutes(-taskTime.Minute);
+            }
+            if (taskTime.Hour > SchedulerSettings.EndTimeHour)
+            {
+                taskTime = taskTime.AddHours(-taskTime.Hour + SchedulerSettings.EndTimeHour);
+                taskTime = taskTime.AddMinutes(-taskTime.Minute);
+            }
+            var minMod15 = taskTime.Minute % SchedulerSettings.TimeStampValue;
             if (minMod15 != 0)
             {
-                taskTime = taskTime.AddMinutes(minMod15 < 8 ? -minMod15 : 15 - minMod15);
+                taskTime = taskTime.AddMinutes(minMod15 < SchedulerSettings.TimeStampValue/2 ? -minMod15 : SchedulerSettings.TimeStampValue - minMod15);
             }
 
             return taskTime;
+        }
+
+        public static DateTime GetTaskDateTime(DateTime baseTime, int desiredHour, int desiredMinute)
+        {
+            var baseTimeHour = baseTime.Hour;
+            var baseTimeMinute = baseTime.Minute;
+            var baseTimeSecond = baseTime.Second;
+
+            if (baseTimeHour > desiredHour && baseTimeMinute > desiredMinute)
+            {
+                throw new InvalidOperationException();
+            }
+
+            var baseTimeWithExtraHours = baseTime.AddHours(desiredHour - baseTimeHour);
+            var baseTimeWithExtraMinutes = baseTimeWithExtraHours.AddMinutes(desiredMinute - baseTimeMinute);
+            var baseTimeWithExtraSeconds = baseTimeWithExtraMinutes.AddSeconds(-baseTimeSecond);
+            return baseTimeWithExtraSeconds;
         }
     }
 }

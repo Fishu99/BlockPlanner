@@ -962,35 +962,48 @@
         <StackPanel
             Grid.Row="2"
             Grid.Column="0"
-            Grid.ColumnSpan="2"
             Margin="10,0,10,0"
             HorizontalAlignment="Left"
             VerticalAlignment="Center"
             Orientation="Horizontal">
 
             <Button
-                Margin="0,0,300,0"
+                Margin="0,0,50,0"
                 Command="{Binding BackToMainMenuCommand}"
                 Content="Back"
+                Background="PaleGoldenrod"
                 Style="{StaticResource PlanDetailsActionButtons}" />
 
             <Button
                 Command="{Binding ModifyPlanSettingsCommand}"
                 CommandParameter="{Binding PlanId}"
                 Content="Modify"
+                Background="LightBlue"
                 Style="{StaticResource PlanDetailsActionButtons}" />
 
+        </StackPanel>
+
+        <StackPanel
+            Grid.Row="2"
+            Grid.Column="1"
+            Margin="10,0,10,0"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center"
+            Orientation="Horizontal">
+
             <Button
-                Margin="50,0,0,0"
+                Margin="0,0,0,0"
                 Content="Export"
-                Style="{StaticResource PlanDetailsActionButtons}" />
+                Background="PaleVioletRed"
+                Style="{StaticResource PlanDetailsActionButtons}" 
+                IsEnabled="False"/>
 
             <Button
                 Margin="50,0,0,0"
                 Content="Import"
+                Background="PaleGreen"
+                IsEnabled="False"
                 Style="{StaticResource PlanDetailsActionButtons}" />
-
-
         </StackPanel>
 
     </Grid>

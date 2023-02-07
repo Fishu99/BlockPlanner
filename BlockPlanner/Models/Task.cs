@@ -93,8 +93,8 @@ namespace BlockPlanner.Models
                 return false;
             }
 
-            if (newTask.EndTime.TimeOfDay < existingTask.StartTime.TimeOfDay
-                || newTask.StartTime.TimeOfDay > existingTask.EndTime.TimeOfDay)
+            if (newTask.EndTime.TimeOfDay <= existingTask.StartTime.TimeOfDay
+                || newTask.StartTime.TimeOfDay >= existingTask.EndTime.TimeOfDay)
             {
                 return false;
             }

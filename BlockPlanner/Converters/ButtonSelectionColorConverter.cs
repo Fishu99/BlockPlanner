@@ -25,10 +25,6 @@ namespace BlockPlanner.Converters
 
             return buttonWeekDayId == parameterWeekDayId ? "#FF90EE90" : //LightGreen
                 "#FFD3D3D3"; //LightGrey
-
-
-            // "#FF90EE90" ; //LightGreen
-            // "#FFD3D3D3"; //LightGrey
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

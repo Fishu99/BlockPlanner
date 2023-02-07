@@ -20,23 +20,31 @@ namespace BlockPlanner.Models
 
         public void AddNewPlan(Plan newPlan)
         {
-            if (_plans != null)
-            {
-                foreach (var exisitingPlan in _plans.Where(exisitingPlan => exisitingPlan.Conflicts(newPlan)))
-                {
-                    throw new SchedulePlanAlreadyExistsException(
-                        "There is a plan in scheduler that has the same date and name like current one.",
-                        exisitingPlan, 
-                        newPlan);
-                }
-
-                _plans.Add(newPlan);
-            }
-            else
+            if (_plans == null)
             {
                 throw new SchedulerPlansEmptyException();
             }
+
+            foreach (var exisitingPlan in _plans.Where(exisitingPlan => exisitingPlan.Conflicts(newPlan)))
+            {
+                throw new SchedulePlanAlreadyExistsException(
+                    "There is a plan in scheduler that has the same date and name like current one.",
+                    exisitingPlan,
+                    newPlan);
+            }
+
+            _plans.Add(newPlan);
         }
 
+
+        public void ModifyPlan(Plan currentPlan)
+        {
+            if (_plans == null)
+            {
+                throw new SchedulerPlansEmptyException("There was no plan to modify.");
+            }
+
+            
+        }
     }
 }

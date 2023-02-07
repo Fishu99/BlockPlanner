@@ -11,10 +11,9 @@ namespace BlockPlanner.Utilities
     {
         public static int CountTaskRow(DateTime taskStartTime)
         {
-            var startDateTime = new DateTime(taskStartTime.Ticks);
-            startDateTime = startDateTime.AddHours(-startDateTime.Hour + SchedulerSettings.StartTimeHour);
+            var startDateTime = new DateTime(taskStartTime.Year, taskStartTime.Month, taskStartTime.Day, SchedulerSettings.StartTimeHour, 0, 0);
 
-            return CountTaskRowsBetween(startDateTime, taskStartTime);
+            return SchedulerSettings.GridRowOffset + CountTaskRowsBetween(startDateTime, taskStartTime);
         }
 
         public static int CountTaskRowSpan(DateTime taskStartTime, DateTime taskEndTime)
@@ -24,16 +23,16 @@ namespace BlockPlanner.Utilities
 
         public static int CountTaskRowsBetween(DateTime taskStartTime, DateTime taskEndTime)
         {
-            var startTimeStamp = taskStartTime.TimeOfDay;
-            var endTimeStamp= taskEndTime.TimeOfDay;
+            var startTimeStamp = (int)taskStartTime.TimeOfDay.TotalMinutes;
+            var endTimeStamp= (int)taskEndTime.TimeOfDay.TotalMinutes;
             var elapsedTime = endTimeStamp - startTimeStamp;
-            var elapsedTimeMinutes = elapsedTime.TotalMinutes;
+            var elapsedTimeMinutes = elapsedTime;
             if (elapsedTimeMinutes % SchedulerSettings.TimeStampValue != 0)
             {
                 Console.WriteLine("Tasks are incorrectly set.");
             }
 
-            var rowsBetween = (int)(elapsedTimeMinutes/SchedulerSettings.TimeStampValue);
+            var rowsBetween = elapsedTimeMinutes/SchedulerSettings.TimeStampValue;
             return rowsBetween;
         }
     }

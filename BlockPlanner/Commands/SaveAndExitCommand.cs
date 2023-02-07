@@ -23,34 +23,23 @@ namespace BlockPlanner.Commands
         {
             var currentPlan = _planSettingsViewModel.Plan;
             var scheduler = _planSettingsViewModel.Scheduler;
-            try
+            if (_planSettingsViewModel.Mode == (int)PlanCreatorMode.Add)
             {
-                scheduler.AddNewPlan(currentPlan);
-                _planSettingsViewModel.BackToPreviousViewCommand.Execute(null);
+                try
+                {
+                    scheduler.AddNewPlan(currentPlan);
+                    _planSettingsViewModel.BackToMainMenuCommand.Execute(null);
+                }
+                catch (SchedulePlanAlreadyExistsException ex)
+                {
+                    MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
             }
-            catch (SchedulePlanAlreadyExistsException ex)
+            else //_planSettingsViewModel.Mode == PlanCreatorMode.Modify
             {
-                MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                scheduler.ModifyPlan(currentPlan);
+                _planSettingsViewModel.BackToPlanDetailsCommand.Execute(_planSettingsViewModel.PlanId);
             }
-
-
-
-            // try
-            // {
-            //     DayPlan curPlan = _planSettingsViewModel.CurrentDayPlan;
-            //     curPlan.AddNewTask(task, out int placementId);
-            //     UpdateCurrentTasks(task, placementId);
-            //
-            //     MessageBox.Show("Successfully added new task.", "Success", MessageBoxButton.OK,
-            //         MessageBoxImage.Information);
-            // }
-            // catch (TaskCollisionException)
-            // {
-            //     MessageBox.Show("New task time interval conflicts with one of the existing tasks", "Error",
-            //         MessageBoxButton.OK, MessageBoxImage.Error);
-            // }
-
-
         }
     }
 }

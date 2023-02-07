@@ -19,6 +19,12 @@ namespace BlockPlanner.Commands
 
         public override void Execute(object parameter)
         {
+            var result = MessageBox.Show("Are you sure you want to delete this task?", "Confirm Delete", MessageBoxButton.YesNo, MessageBoxImage.Question);
+            if (result != MessageBoxResult.Yes)
+            {
+                return;
+            }
+
             var selectedTaskDetails = _planSettingsViewModel.SelectedTask;
             if (selectedTaskDetails == null || _planSettingsViewModel.CurrentTasks.Count == 0)
             {
@@ -42,7 +48,7 @@ namespace BlockPlanner.Commands
             }
             else
             {
-                _planSettingsViewModel.SelectedTask = TaskDetailsViewModel.GetDefaultTask();
+                _planSettingsViewModel.SelectedTask = TaskDetailsViewModel.GetDefaultTask(_planSettingsViewModel.SelectedDate);
             }
 
             MessageBox.Show($"Task {taskName} successfully deleted", "Success",

@@ -130,7 +130,10 @@
                     <GridViewColumn>
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
-                                <Button Style="{StaticResource DeleteButtonCell}" />
+                                <Button
+                                    Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type UserControl}}, Path=DataContext.DeletePlanCommand}"
+                                    CommandParameter="{Binding PlanId}"
+                                    Style="{StaticResource DeleteButtonCell}" />
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>
